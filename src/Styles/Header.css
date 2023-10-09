@@ -1,8 +1,39 @@
-@media screen and (min-width:700px) {
-    .Container{
-        grid-template-areas: "logo nav";
-    }
-    .NavButton{
-        display: none;
-    }
+/* Définissez votre animation */
+@keyframes slide-from-top {
+    0% { opacity: 0; transform: translateY(-100%)}
+    100% { opacity: 1; transform: translateY(0)}
+  }
+  
+  /* Appliquez l'animation à l'élément */
+.slide-from-top-animation {
+    animation: slide-from-top 0.5s ease;
 }
+
+/* Button Hamburger */
+.bouton-hamburger {
+    width: 30px;
+    height: 3px;
+    background-color: #333;
+    margin: 6px 0;
+    position: relative;
+  }
+  
+  .bouton-hamburger::before,
+  .bouton-hamburger::after {
+    content: '';
+    width: 30px;
+    height: 3px;
+    background-color: #333;
+    position: absolute;
+    align-self: auto;
+  }
+  
+  .bouton-hamburger::before {
+    top: -10px;
+  }
+  
+  .bouton-hamburger::after {
+    top: 10px;
+  }
+  
+  

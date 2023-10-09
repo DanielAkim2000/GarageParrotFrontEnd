@@ -1,8 +1,13 @@
-import styled from 'styled-components'
+import styled,{ css } from 'styled-components'
 import logo from '../../Logo.png'
 import React, { useEffect,useState } from 'react';
 import '../../Styles/Header.css';
 
+    const color_over = `rgba(20, 116, 199)`;
+    const colorBackgroundHeader = `black`;
+    const sizeScreenMiddle = `700px`;
+    const sizeScreenBig = `1100px`;
+    const animationHeader = `slide-from-top-animation` 
     const Container = styled.header`
         display: grid;
         justify-content: space-between;
@@ -10,11 +15,17 @@ import '../../Styles/Header.css';
         backdrop-filter: blur(5px);
         align-items : center;
         position: fixed;
-        background-color: black;
+        background-color: ${colorBackgroundHeader};
         opacity: 0.7;
         overflow: hidden;
         color: white;
         grid-template-areas: "logo navbutton" "nav nav";
+        @media screen and (min-width: ${sizeScreenMiddle}) {
+                grid-template-areas: "logo logo nav nav";
+        }
+        @media screen and (min-width: ${sizeScreenBig}) {
+            grid-template-areas: "logo logo logo logo nav nav";
+        }
     `
     
     const Image = styled.img`
@@ -24,19 +35,25 @@ import '../../Styles/Header.css';
 
     `
     const Nav = styled.nav`
-        display: grid;
         justify-items: center;
         grid-area: nav;
     `
     const NavButton = styled.button`
-
+        margin-right: 10px;
+        @media screen and (min-width: 700px){
+            display:none;
+        }
     `
     const CustomLi = styled.li`
         border-top: solid white 1px;
         list-style-type: none;
         width: 100%;
-        display: grid;
-        place-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @media screen and (min-width: ${sizeScreenMiddle}) {
+            border-top: none
+        }
     `
     const UL = styled.ul`
         width: 100%;
@@ -45,20 +62,36 @@ import '../../Styles/Header.css';
         display:grid;
         height: 30vh;
         grid-template-rows: repeat(4, auto);
-        grid-template-columns:none:
-        grid-row-gap: 25%;
+        grid-template-columns: none;
+        grid-row-gap: 0;
+        & > li:last-child{
+            border-bottom: solid white 1px;
+        }
+        @media screen and (min-width: ${sizeScreenMiddle}) {
+            grid-template-row: none;
+            grid-template-columns: repeat(4,auto);
+            height:100%;
+            & > li:last-child{
+                border-bottom: 0;
+            }
+        }
+
+    `
+    const A = styled.a`
+        &:hover {
+            color: ${color_over} ;
+        }
     `
     
-      
     export default function Header(){
         const [isBigScreen, setIsBigScreen] = useState(false);
         useEffect(() => {
-            const mediaQuery = window.matchMedia("(min-width: 700px)");
+            const mediaQuery = window.matchMedia(`(min-width:`+sizeScreenMiddle+`)`);
             
             const handleMediaQueryChange = (event) => {
                 // <700px
                 if (event.matches) {
-                setIsBigScreen(true);
+                    setIsBigScreen(true);
                 } 
                 else {
                 // >700px
@@ -87,19 +120,19 @@ import '../../Styles/Header.css';
             setIsNavVisible(!isNavVisible);
         }
         return(
-            <Container>
+            <Container className={isNavVisible ? `${ animationHeader }` : ''}>
                 <Image src={logo} />
-                {isNavVisible && (
-                    <Nav>
+                {(isNavVisible || isBigScreen) && (
+                    <Nav className={`${animationHeader}`}>
                         <UL>
-                            <CustomLi><a>Accueil</a></CustomLi>
-                            <CustomLi><a>Nos Services</a></CustomLi>
-                            <CustomLi><a>Voitures</a></CustomLi>
-                            <CustomLi style={{borderBottom: 'solid white 1px'}}><a>Nous Conctatez</a></CustomLi>
+                            <CustomLi><A>Accueil</A></CustomLi>
+                            <CustomLi><A>Nos Services</A></CustomLi>
+                            <CustomLi><A>Voitures</A></CustomLi>
+                            <CustomLi><A>Nous Conctatez</A></CustomLi>
                         </UL>
                     </Nav>
                 )}
-                <NavButton onClick={toggle}></NavButton>
+                <NavButton className={`bouton-hamburger`} onClick={toggle}></NavButton>
             </Container>
         )
     }
