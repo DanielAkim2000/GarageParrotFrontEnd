@@ -1,0 +1,8 @@
+@media screen and (min-width:700px) {
+    .Container{
+        grid-template-areas: "logo nav";
+    }
+    .NavButton{
+        display: none;
+    }
+}
