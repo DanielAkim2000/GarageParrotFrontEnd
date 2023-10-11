@@ -12,28 +12,9 @@
 /* Button Hamburger */
 .bouton-hamburger {
     width: 30px;
-    height: 3px;
+    height: 30px;
     background-color: #333;
-    margin: 6px 0;
-    position: relative;
   }
   
-  .bouton-hamburger::before,
-  .bouton-hamburger::after {
-    content: '';
-    width: 30px;
-    height: 3px;
-    background-color: #333;
-    position: absolute;
-    align-self: auto;
-  }
-  
-  .bouton-hamburger::before {
-    top: -10px;
-  }
-  
-  .bouton-hamburger::after {
-    top: 10px;
-  }
   
   
