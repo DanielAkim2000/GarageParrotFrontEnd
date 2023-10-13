@@ -1,7 +1,10 @@
 import styled,{ css } from 'styled-components'
 import logo from '../../logo.jpg'
 import React, { useEffect,useState } from 'react';
-import '../../Styles/Header.css';
+import './Header.css';
+import { Link,useLocation,useNavigate } from 'react-router-dom';
+
+
     // styles-compenent
     const color_over = `rgba(20, 116, 199)`;
     const colorBackgroundHeader = `white`;
@@ -14,15 +17,14 @@ import '../../Styles/Header.css';
         width: 100vw;
         backdrop-filter: blur(5px);
         align-items : center;
-        position: sticky;
         background-color: ${colorBackgroundHeader};
-        opacity: 0.7;
         overflow: hidden;
+        z-index: 999; 
         color: black;
         grid-template-areas: 
             "logo nameofsite  navbutton" 
             " . input ."
-            ". nav ."
+            "nav nav nav"
         ;
         @media screen and (min-width: ${sizeScreenMiddle}) {
                 grid-template-areas: "logo logo nameofsite input nav nav";
@@ -53,7 +55,7 @@ import '../../Styles/Header.css';
         }
     `
     const CustomLi = styled.li`
-        border-top: solid white 1px;
+        border-top: solid black 1px;
         list-style-type: none;
         width: 100%;
         display: flex;
@@ -73,7 +75,7 @@ import '../../Styles/Header.css';
         grid-template-columns: none;
         grid-row-gap: 0;
         & > li:last-child{
-            border-bottom: solid white 1px;
+            border-bottom: solid black 1px;
         }
         @media screen and (min-width: ${sizeScreenMiddle}) {
             grid-template-row: none;
@@ -85,7 +87,7 @@ import '../../Styles/Header.css';
         }
 
     `
-    const A = styled.a`
+    const CustomLink = styled(Link)`
         text-decoration: none;
         color: black;
         &:hover {
@@ -98,9 +100,9 @@ import '../../Styles/Header.css';
         justify-items: center;
         margin-bottom:1rem;
         margin-top:1rem;
+        place-items:center
         @media screen and (min-width: ${sizeScreenBig}) {
             place-items:center;
-            margin-bottom:0;
         }
     `
 
@@ -118,7 +120,18 @@ import '../../Styles/Header.css';
         const [isNavVisible, setIsNavVisible] = useState(false);
 
         // comportements
+        const location = useLocation();
+        const history = useNavigate();
 
+        const handleClick = () => {
+            if (location.pathname === '/') {
+            // Si vous êtes déjà sur la page d'accueil, faites défiler vers le haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+            // Sinon, naviguez vers la page d'accueil
+            history('/');
+            }
+        };
         useEffect(() => {
             const mediaQuery = window.matchMedia(`(min-width:`+sizeScreenMiddle+`)`);
             
@@ -159,10 +172,10 @@ import '../../Styles/Header.css';
                 {(isNavVisible || isBigScreen) && (
                     <Nav className={`${animationHeader}`}>
                         <UL>
-                            <CustomLi><A>Accueil</A></CustomLi>
-                            <CustomLi><A>Nos Services</A></CustomLi>
-                            <CustomLi><A>Voitures</A></CustomLi>
-                            <CustomLi><A>Nous Conctatez</A></CustomLi>
+                            <CustomLi><CustomLink onClick={handleClick} to={'/'}>Accueil</CustomLink></CustomLi>
+                            <CustomLi><CustomLink to={'index'}>Nos Services</CustomLink></CustomLi>
+                            <CustomLi><CustomLink>Voitures</CustomLink></CustomLi>
+                            <CustomLi><CustomLink>Nous Conctatez</CustomLink></CustomLi>
                         </UL>
                     </Nav>
                 )}
