@@ -9,6 +9,7 @@ const Main = styled.main`
     margin-top: 120px;
 `
 export function Home(){
+    //state (états/données)
     const [services,setServices] = useState(
         [
             {}
@@ -24,7 +25,13 @@ export function Home(){
             {}
         ]
     );
+    const [horaires,setHoraires] = useState(
+        [
+            {}
+        ]
+    );
 
+    // Requete Axios
     useEffect(()=>{
         axios.get('http://localhost:8000/api/services')
             .then(response => {
@@ -52,6 +59,15 @@ export function Home(){
                 console.error(error);
             });
     },[])
+    useEffect(()=>{
+        axios.get('http://localhost:8000/api/horaires')
+            .then(response => {
+                setHoraires( response.data.horairesouvertures );
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    },[])
     return <>
            <Header/>
             <Main>
@@ -60,7 +76,7 @@ export function Home(){
                         <button className='btn btn-primary m-3'>Acheter une voiture</button>
                         <button className='btn btn-primary m-3'>Vendre votre voiture</button>
                     </div>
-                    <div>
+                    <div className='text-center'>
                         <p>Title</p>
                         <p>Phrase reference</p>
                         <ScrollBar element='card' auto={true} centerMode={true} data={voitures} />
@@ -75,7 +91,10 @@ export function Home(){
                         <ScrollBar element='cardServices' auto={false} centerMode={true} data={services} />
                         <button>Voir Tous les Services</button>
                     </div>
+                    <div className='text-center'>
+                        Presentation
+                    </div>
             </Main>
-            <Footer/>
+            <Footer data={horaires}/>
         </>
   }

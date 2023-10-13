@@ -99,22 +99,28 @@ export default function ScrollBar(props){
             <Carousel autoPlay={auto} infiniteLoop centerMode={centerMode} showThumbs={false} interval={2500}>
                 {datas && datas.map((data) => (
                     <div>
-                        {(element == 'card') && (
-                            <ListCards key={data.id} datas={data} width={220} />
-                        )}
+                        <div>
+                            {(element == 'card') && (
+                                <ListCards key={data.id} datas={data} width={220} />
+                            )}
+                        </div>
+                        <div>
                         {(element == 'image') &&
                         (
                             <ListImages key={data.id} datas={data} />
                         )}
-                        {(element == 'cardTemoignages') &&
-                        (
-                            <ListCardsTemoignages key={data.id} width={220} datas={data} />
-                        )}
+                        </div>
+                        <div>
+                            {(element == 'cardTemoignages') &&
+                            (
+                                <ListCardsTemoignages key={data.id} width={220} datas={data} />
+                            )}
+                        </div>
                         <div className='test'> 
-                        {(element == 'cardServices') &&
-                        (
-                            <ListCardsServices className='test' key={data.id} width={220} datas={data} />
-                        )}
+                            {(element == 'cardServices') &&
+                            (
+                                <ListCardsServices className='test' key={data.id} width={220} datas={data} />
+                            )}
                         </div>
                     </div>
                 ))}
