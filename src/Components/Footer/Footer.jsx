@@ -1,5 +1,5 @@
-import styled,{ css } from 'styled-components'
-import React, { useEffect,useState } from 'react';
+import styled from 'styled-components'
+import React from 'react';
 import './Footer.css';
 
 const CustomFooter = styled.footer`
@@ -24,13 +24,13 @@ export default function Footer(props){
                 {(horaires && horaires.map((horaire) => (
                     <ul> 
                         <li key={horaire.id}>
-                            <p>{ horaire.jourSemaine && horaire.jourSemaine.id }: {horaire.heureOuverture} - {horaire.heureFermeture}</p>
+                            <p key={horaire.jourSemaine}>{ horaire.jourSemaine && horaire.jourSemaine.id }: {horaire.heureOuverture} - {horaire.heureFermeture}</p>
                         </li> 
                     </ul>        
                 )))}
             </div>
             <div>
-                
+                Options
             </div>
             <div>
 

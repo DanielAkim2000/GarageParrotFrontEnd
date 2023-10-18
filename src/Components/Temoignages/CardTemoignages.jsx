@@ -18,5 +18,6 @@ export default function CardTemoignages(props){
                 <CustomCard.Text>{ data.nom }</CustomCard.Text>
             </CustomCard.Body>
         </CustomCard>
-  );
+    );
+    
 }

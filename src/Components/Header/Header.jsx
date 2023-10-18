@@ -124,7 +124,7 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
         const history = useNavigate();
 
         const handleClick = () => {
-            if (location.pathname === '/') {
+            if (location.pathname === '/' || location.pathname === '/Services' || location.pathname === '/Voitures' || location.pathname === '/NousContacter' ) {
             // Si vous êtes déjà sur la page d'accueil, faites défiler vers le haut
             window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
@@ -173,9 +173,9 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
                     <Nav className={`${animationHeader}`}>
                         <UL>
                             <CustomLi><CustomLink onClick={handleClick} to={'/'}>Accueil</CustomLink></CustomLi>
-                            <CustomLi><CustomLink to={'index'}>Nos Services</CustomLink></CustomLi>
-                            <CustomLi><CustomLink>Voitures</CustomLink></CustomLi>
-                            <CustomLi><CustomLink>Nous Conctatez</CustomLink></CustomLi>
+                            <CustomLi><CustomLink onClick={handleClick} to="/Services">Nos Services</CustomLink></CustomLi>
+                            <CustomLi><CustomLink onClick={handleClick} to="/Voitures">Voitures</CustomLink></CustomLi>
+                            <CustomLi><CustomLink onClick={handleClick} to="/NousContacter">Nous Conctater</CustomLink></CustomLi>
                         </UL>
                     </Nav>
                 )}

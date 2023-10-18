@@ -1,6 +1,9 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { NousContacter } from '../../Pages/NousContacter';
+import { Navigate } from 'react-router-dom';
 
 const CustomCard = styled(Card)`
     margin: 10px
@@ -8,8 +11,10 @@ const CustomCard = styled(Card)`
 `
 
 export default function Carte(props){
+    // (donnees et etats)
     const width = props.width
     const data = props.data
+
     return (
         <CustomCard  style={{ width:  width+'px', textAlign:'center' }}>
             <CustomCard.Img height={'170px'} variant="top" src={data.image} />
@@ -21,7 +26,7 @@ export default function Carte(props){
             </CustomCard.Body>
             <Card.Body style={{ margin: 'auto'}}>
                 <Card.Link href="#">Détails</Card.Link>
-                <Card.Link href="#">contact</Card.Link>
+                <Link to="/NousContacter/" state={data.id} data={data}>contact</Link>
             </Card.Body>
         </CustomCard>
   );

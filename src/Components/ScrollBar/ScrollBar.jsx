@@ -1,5 +1,5 @@
 // src/components/MyComponent.js
-import React, { useEffect, useState,useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -9,10 +9,6 @@ import CardServices from '../Card/CardServices.jsx';
 
 
 // styles components
-
-const ImagesData = styled.img`
-    width:100%;
-`
 const Container = styled.div`
     width:100%;
     height:30%;
@@ -42,25 +38,11 @@ const TitleData = styled.p`
     color: white; /* Couleur du texte */
     padding: 1px;
 `
-const LI = styled.li`
-`
-
-const UL = styled.ul`
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-
-    white-space: nowrap;
-    li {
-        position:relative; /* Place les éléments de liste côte à côte */
-    }
-`
 
 //return une liste d'image
-function ListImages(props){
+export function ListImages(props){
     let data = props.datas
-    return  <div>
+    return  <div key={props.id} >
                 <TitleData>{data.nom}</TitleData>
                 <DataImage src={data.image} />
             </div>
@@ -69,19 +51,22 @@ function ListImages(props){
 function ListCards(props){
     let data = props.datas
     let width = props.width
-    return <Carte data={data} width={width} />
+    return <Carte key={props.id} data={data} width={width} />
 }
 
 function ListCardsTemoignages(props){
     let data = props.datas
     let width = props.width
-    return <CardTemoignages data={data} width={width} />
+    return <CardTemoignages key={props.id} data={data} width={width} />
 }
 
 function ListCardsServices(props){
     let data = props.datas
     let width = props.width
-    return <CardServices data={data} width={width} />
+    return (
+    <CardServices key={props.id} data={data} width={width} />
+    )
+
 }
 
 export default function ScrollBar(props){
@@ -99,27 +84,27 @@ export default function ScrollBar(props){
             <Carousel autoPlay={auto} infiniteLoop centerMode={centerMode} showThumbs={false} interval={2500}>
                 {datas && datas.map((data) => (
                     <div>
-                        <div>
-                            {(element == 'card') && (
-                                <ListCards key={data.id} datas={data} width={220} />
+                        <div key={data.id}>
+                            {(element === 'card') && (
+                                <ListCards id={data.id} datas={data} width={220} />
                             )}
                         </div>
                         <div>
-                        {(element == 'image') &&
+                        {(element === 'image') &&
                         (
-                            <ListImages key={data.id} datas={data} />
+                            <ListImages id={data.id}  datas={data} />
                         )}
                         </div>
                         <div>
-                            {(element == 'cardTemoignages') &&
+                            {(element === 'cardTemoignages') &&
                             (
-                                <ListCardsTemoignages key={data.id} width={220} datas={data} />
+                                <ListCardsTemoignages id={data.id}  width={220} datas={data} />
                             )}
                         </div>
                         <div className='test'> 
-                            {(element == 'cardServices') &&
+                            {(element === 'cardServices') &&
                             (
-                                <ListCardsServices className='test' key={data.id} width={220} datas={data} />
+                                <ListCardsServices className='test' id={data.id}  width={220} datas={data} />
                             )}
                         </div>
                     </div>
