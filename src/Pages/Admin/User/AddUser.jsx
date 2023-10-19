@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Add = () => {
+const AddUser = () => {
     return (
         <div>Add User</div>
     );
 }
 
 
-export { Add };
+export { AddUser };

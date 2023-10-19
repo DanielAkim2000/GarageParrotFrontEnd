@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Delete = () => {
+const DeleteHoraires = () => {
     return (
         <div>Delete Horaires</div>
     );
 }
 
 
-export { Delete };
+export { DeleteHoraires };

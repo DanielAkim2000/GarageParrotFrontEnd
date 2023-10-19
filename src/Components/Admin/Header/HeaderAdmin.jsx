@@ -2,7 +2,9 @@ import React from 'react';
 
 const HeaderAdmin = () => {
     return (
-        <div>Header Admin</div>
+        <div className='text-center border-bottom' >
+            Header Admin
+        </div>
     );
 }
 

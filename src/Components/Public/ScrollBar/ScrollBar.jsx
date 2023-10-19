@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Carte,CardServices,CardTemoignages } from '../../../Components';
+import { Carte,CardServices,CardTemoignages } from '../../../Components/Public';
 
 
 // styles components
@@ -11,10 +11,11 @@ const Container = styled.div`
     width:100%;
     height:30%;
     position: relative;
-    padding:0;
+    justify-content: center;
+    align-items:center;
     white-space: nowrap; /* Empêche le texte de revenir à la ligne */
     &:first-child{
-        padding:0;
+        padding:auto;
         width:100%;
         margin:0;
     }

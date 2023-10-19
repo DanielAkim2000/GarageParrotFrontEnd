@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 const CustomCard = styled(Card)`
-    margin: 10px
+    margin: 20px;
     
 `
 
@@ -24,7 +24,7 @@ const Carte = (props) => {
             </CustomCard.Body>
             <Card.Body style={{ margin: 'auto'}}>
                 <Card.Link href="#">Détails</Card.Link>
-                <Link to="/NousContacter/" state={data.id} data={data}>contact</Link>
+                <Link to="/NousContacter/" state={data} data={data}>contact</Link>
             </Card.Body>
         </CustomCard>
   );

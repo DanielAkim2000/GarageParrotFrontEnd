@@ -1,5 +1,5 @@
 import Card from 'react-bootstrap/Card'
-import { ScrollBar,Paginator } from '../../Components';
+import { ScrollBar,Paginator } from '../../Components/Public';
 import { useState } from 'react';
 
 

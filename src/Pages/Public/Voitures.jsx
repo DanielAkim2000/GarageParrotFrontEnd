@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Carte,Paginator } from '../../Components';
+import { Carte,Paginator } from '../../Components/Public';
 
 
 const Voitures = (props) => {

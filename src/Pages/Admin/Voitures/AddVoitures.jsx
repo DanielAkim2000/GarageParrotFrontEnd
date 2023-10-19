@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Add = () => {
+const AddVoitures = () => {
     return (
         <div>Add Voiture</div>
     );
 }
 
-export { Add }
+export { AddVoitures }

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Delete = () => {
+const DeleteServices = () => {
     return (
         <div>Delete Services</div>
     );
 }
 
-export { Delete };
+export { DeleteServices };
