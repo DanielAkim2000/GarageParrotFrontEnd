@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { Routes,Route } from "react-router-dom";
 import AdminRouter from './Router/AdminRouter';
 import PublicRouter from './Router/PublicRouter';
+import AuthGuard from './_helpers/AuthGuard';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 100%;
   `
 
 function App() {
@@ -15,7 +17,11 @@ function App() {
     <Container>
       <Routes>
         <Route path='/*' element={<PublicRouter />} />
-        <Route path='/Admin/*' element={<AdminRouter />} />
+        <Route path='/Admin/*' element={
+        <AuthGuard>
+          <AdminRouter />
+        </AuthGuard>
+        } />
       </Routes>  
     </Container>
       

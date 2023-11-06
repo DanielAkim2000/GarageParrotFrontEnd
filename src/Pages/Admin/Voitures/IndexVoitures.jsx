@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
-import axios from 'axios';
-import { Paginator } from '../../../Components/Public';
+import axios from '../../../Api/axios.jsx';
+import { Loading, Paginator } from '../../../Components/Public';
+import { useNavigate } from 'react-router-dom';
 
 const IndexVoitures = () => {
     // state (etats,donees)
@@ -9,6 +10,10 @@ const IndexVoitures = () => {
         {}
     ]);
     const [loading,setLoading] = useState(true);
+
+    const token = localStorage.getItem("token");
+
+    const navigate = useNavigate();
     
      // donnee pour les paginator
      let nombreElementPages = 5;
@@ -51,16 +56,38 @@ const IndexVoitures = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get('http://localhost:8000/api/voitures')
+        axios.get('/api/voitures',{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then((response)=>{
-                setVoitures(response.data.voituresoccasions);
-                console.log(response.data.voituresoccasions);
+                setVoitures(response.data);
+                console.log(response.data);
             setLoading(false);
             })
             .catch((error) =>{
             console.log(error);
             })
     },[])
+
+    const goModify = (voiture) => {
+        navigate('/Admin/Voitures/Edit',{state:{ voitures : voiture}})
+    }
+    
+    const deleteVoiture = (voiture) => {
+        axios.delete(`/api/deleteVoiture/${voiture.id}`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((response)=>{
+                console.log(response)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+    }
     
     return (
         <>
@@ -80,7 +107,7 @@ const IndexVoitures = () => {
                 <tbody>
                 {loading? (
                 <tr>
-                    <td colSpan="6">Loading...</td>
+                    <td colSpan="6"><Loading/></td>
                 </tr>)
                 : dataMap? (
                     dataMap.map((voiture) => (
@@ -90,11 +117,11 @@ const IndexVoitures = () => {
                             <td>{voiture.modele}</td>
                             <td>{voiture.description}</td>
                             <td>{voiture.kilometrage}</td>
-                            <td>{voiture.anneeMiseEnCirculation}</td>
-                            <td><img src={'/'+voiture.image} alt={voiture.modele} className='w-50 h-25' /></td>
+                            <td>{voiture.annee_mise_en_circulation}</td>
+                            <td><img src={voiture.image} alt={voiture.modele} className='img-fluid img-thumbnail' /></td>
                             <td>
-                                <button >Modifier</button>
-                                <button>Supprimer</button>
+                                <button onClick={()=>{goModify(voiture)}}>Modifier</button>
+                                <button onClick={()=>{deleteVoiture(voiture)}} >Supprimer</button>
                             </td>
                         </tr>
                         

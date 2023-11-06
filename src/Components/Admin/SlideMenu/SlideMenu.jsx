@@ -41,6 +41,12 @@ const SlideMenu = () => {
                     <Link to="/Admin/Avis/Index">Liste</Link>
                 </ul>
             </li>
+            <li>
+                <Link to="/Admin/Contacts">Contacts</Link>
+                <ul className='d-flex flex-column'>
+                    <Link to="/Admin/Contacts/Index">Liste</Link>
+                </ul>
+            </li>
         </ul>
     );
 }

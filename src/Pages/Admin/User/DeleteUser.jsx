@@ -2,8 +2,10 @@ import React from 'react';
 
 const DeleteUser = () => {
     return (
-       <div>Delete User</div>
+        <div>
+            
+        </div>
     );
-}
+};
 
-export { DeleteUser }
+export {DeleteUser}

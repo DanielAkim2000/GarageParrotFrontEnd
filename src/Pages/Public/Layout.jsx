@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import styled from 'styled-components';
 
 const Main = styled.main`
-    margin-top:3rem;
+    margin-top:3.5rem;
     display:flex;
     flex-direction:column;
     justify-content:center;

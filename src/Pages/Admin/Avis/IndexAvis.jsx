@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../../Api/axios.jsx';
 import { Switch } from '../../../Components/Admin';
-import { Paginator } from '../../../Components/Public';
+import { Paginator,Loading } from '../../../Components/Public';
+import { useNavigate } from 'react-router-dom';
 
 const IndexAvis = () => {
     // state (etats,donees)
@@ -9,6 +10,9 @@ const IndexAvis = () => {
         {}
     ]);
     const [loading,setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    const token = localStorage.getItem("token");
     
     // donnee pour les paginator
     let nombreElementPages = 5;
@@ -51,16 +55,22 @@ const IndexAvis = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get('http://localhost:8000/api/temoignages')
+        axios.get('/api/temoignages',{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then((response)=>{
-            setAvis(response.data.temoignages);
+            setAvis(response.data);
             setLoading(false);
             })
             .catch((error) =>{
             console.log(error);
             })
     },[])
-    
+    const goModify = (avi) =>{
+        navigate('/Admin/Avis/Edit',{state:{ avis : avi}})
+    }
     return (
     <>
         <table className='table'>
@@ -77,7 +87,7 @@ const IndexAvis = () => {
             <tbody>
             {loading? (
             <tr>
-                <td colSpan="6">Loading...</td>
+                <td colSpan="6"><Loading/></td>
             </tr>)
             : dataMap? (
                 dataMap.map((avi) => (
@@ -88,7 +98,7 @@ const IndexAvis = () => {
                         <td>{avi.note}</td>
                         <td><Switch bool={avi.modere} /></td>
                         <td>
-                            <button >Modifier</button>
+                            <button onClick={()=>{goModify(avi)}}>Modifier</button>
                             <button>Supprimer</button>
                         </td>
                     </tr>

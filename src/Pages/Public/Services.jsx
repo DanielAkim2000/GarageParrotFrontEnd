@@ -48,18 +48,20 @@ const Services = (props) =>{
     
     return(
             <>
+                <div className='d-flex flex-row flex-wrap justify-content-center'>
                 { (dataMap) && dataMap.map((service) => (
                 <div className='m-2 '>
-                <Card className="bg-white text-white">
-                    <Card.Img src={service.image} alt="Card image" />
+                <Card className="bg-white text-white w-75">
+                    <Card.Img style={{height:'20rem',width : '40rem'}} src={service.image} alt="Card image" />
                     <Card.ImgOverlay>
                      <Card.Title>{service.nom}</Card.Title>
                     </Card.ImgOverlay>
                 </Card>
                 <a href="/Service">En savoir plus</a>
                 </div>
-                ))}       
-                <div>
+                ))}
+                </div>       
+                <div className=''>
                     <div style={{textAlign:'center'}} >
                         <h2>Les avis de nos client</h2>
                         <ScrollBar element='cardTemoignages' auto={false} centerMode={true} data={temoignages} />

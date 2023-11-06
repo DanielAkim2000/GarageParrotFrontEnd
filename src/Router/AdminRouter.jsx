@@ -3,7 +3,7 @@ import { Routes,Route } from 'react-router-dom'
 import { Home } from '../Pages/Admin/Home.jsx'
 import { Error } from '../_utils/Error.jsx'
 import LayoutAdmin from '../Pages/Admin/LayoutAdmin.jsx'
-import { AddUser,DeleteUser,EditUser,IndexUser } from '../Pages/Admin/';
+import { AddUser,DeleteUser,EditUser,IndexContact,IndexUser } from '../Pages/Admin/';
 import { AddServices,DeleteServices,EditServices,IndexServices } from '../Pages/Admin/';
 import { AddVoitures,DeleteVoitures,EditVoitures,IndexVoitures } from '../Pages/Admin/';
 import { DeleteAvis,EditAvis,IndexAvis } from '../Pages/Admin/';
@@ -15,7 +15,6 @@ export default function AdminRouter() {
     <Routes>
       <Route element={<LayoutAdmin />}>
         <Route index element={<Home />} />
-
         <Route path='/Home' element={<Home />} />
         <Route path='/User'>
           <Route index element={<IndexUser />} />
@@ -55,6 +54,11 @@ export default function AdminRouter() {
           <Route path='/Horaires/Edit' element={<EditHoraires />} />
           <Route path='/Horaires/Delete' element={<DeleteHoraires />} />
           <Route path='/Horaires/Index' element={<IndexHoraires />} />
+        </Route>
+        <Route path='/Contacts'>
+          <Route index element={<IndexContact />} />
+
+          <Route path='/Contacts/Index' element={<IndexContact />} />
         </Route>
         <Route path='*' element={<Error />} />
       </Route>

@@ -2,28 +2,25 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "../../../Api/axios.jsx";
 import { Loading } from "../../../Components/Public";
-import { useNavigate } from "react-router-dom";
 
-const IndexHoraires = () => {
+const IndexContact = () => {
   // state (etats,donees)
-  const [horaires, setHoraires] = useState([{}]);
+  const [contacts, setContacts] = useState([{}]);
   const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("token");
-
-  const navigate = useNavigate();
   //comportement
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("/api/horairesAdmin",{
+      .get("/api/contacts",{
         headers:{
             Authorization: `Bearer ${token}`
         }
     })
       .then((response) => {
-        setHoraires(response.data);
+        setContacts(response.data);
         console.log(response.data);
         setLoading(false);
       })
@@ -32,12 +29,8 @@ const IndexHoraires = () => {
       });
   }, []);
 
-  const goModify = (horaire) => {
-    navigate("/Admin/Horaires/Edit", { state: { horaires: horaire } });
-  };
-
-  const deleteHoraire = (horaire) => {
-    axios.delete(`/api/deleteHoraire/${horaire.id}`,{
+  const deleteContact = (contact) => {
+    axios.delete(`/api/deleteContact/${contact.id}`,{
       headers:{
           Authorization: `Bearer ${token}`
       }
@@ -54,9 +47,12 @@ const IndexHoraires = () => {
     <table className="table">
       <thead>
         <tr>
-          <th scope="col">Jour</th>
-          <th scope="col">Heure d'ouverture</th>
-          <th scope="col">Heure de fermeture</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Prenom</th>
+          <th scope="col">Email</th>
+          <th scope="col">Numéro de téléphone</th>
+          <th scope="col">Message</th>
+          <th scope="col">Sujet</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -67,21 +63,17 @@ const IndexHoraires = () => {
               <Loading />
             </td>
           </tr>
-        ) : horaires ? (
-          horaires.map((horaire) => (
-            <tr key={horaire.id}>
-              <th scope="row">{horaire.jour_semaine}</th>
-              <td>{horaire.heure_ouverture}</td>
-              <td>{horaire.heure_fermeture}</td>
+        ) : contacts ? (
+          contacts.map((contact) => (
+            <tr key={contact.id}>
+              <th scope="row">{contact.nom}</th>
+              <td>{contact.prenom}</td>
+              <td>{contact.email}</td>
+              <td>{contact.numero_telephone}</td>
+              <td>{contact.message}</td>
+              <td>{contact.sujet}</td>
               <td>
-                <button
-                  onClick={() => {
-                    goModify(horaire);
-                  }}
-                >
-                  Modifier
-                </button>
-                <button onClick={()=>{deleteHoraire(horaire)}}>Supprimer</button>
+                <button onClick={()=>{deleteContact(contact)}}>Supprimer</button>
               </td>
             </tr>
           ))
@@ -95,4 +87,4 @@ const IndexHoraires = () => {
   );
 };
 
-export { IndexHoraires };
+export { IndexContact };

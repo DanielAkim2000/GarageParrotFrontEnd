@@ -18,6 +18,7 @@ export * from './Voitures/AddVoitures.jsx';
 export * from './Voitures/DeleteVoitures.jsx';
 export * from './Voitures/EditVoitures.jsx';
 export * from './Voitures/IndexVoitures.jsx';
+export * from './Contact/IndexContact.jsx';
 
 
 

@@ -21,6 +21,7 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
         overflow: hidden;
         z-index: 999; 
         color: black;
+        border-bottom: solid 1px;
         grid-template-areas: 
             "logo nameofsite  navbutton" 
             "nav nav nav"
@@ -162,7 +163,7 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
                             <CustomLi><CustomLink onClick={handleClick} to={'/'}>Accueil</CustomLink></CustomLi>
                             <CustomLi><CustomLink onClick={handleClick} to="/Services">Nos Services</CustomLink></CustomLi>
                             <CustomLi><CustomLink onClick={handleClick} to="/Voitures">Voitures</CustomLink></CustomLi>
-                            <CustomLi><CustomLink onClick={handleClick} to="/NousContacter">Nous Conctater</CustomLink></CustomLi>
+                            <CustomLi><CustomLink onClick={handleClick} to="/Admin">Admin</CustomLink></CustomLi>
                         </UL>
                     </Nav>
                 )}

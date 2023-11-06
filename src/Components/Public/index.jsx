@@ -7,3 +7,4 @@ export * from './ScrollBar/ScrollBar.jsx';
 export * from './Temoignages/CardTemoignages.jsx';
 export * from './Footer/Footer.jsx';
 export * from './ScrollBar/ScrollBar.jsx';
+export * from './Loading/Loading.jsx';

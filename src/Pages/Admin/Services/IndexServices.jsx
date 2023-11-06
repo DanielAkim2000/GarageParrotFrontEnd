@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
-import axios from 'axios';
-import { Paginator } from '../../../Components/Public';
+import axios from '../../../Api/axios.jsx';
+import { Loading, Paginator } from '../../../Components/Public';
+import { useNavigate } from 'react-router-dom';
 
 const IndexServices = () => {
        // state (etats,donees)
@@ -9,6 +10,10 @@ const IndexServices = () => {
         {}
     ]);
     const [loading,setLoading] = useState(true);
+
+    const navigate = useNavigate();
+
+    const token = localStorage.getItem("token");
     
     // donnee pour les paginator
     let nombreElementPages = 5;
@@ -51,17 +56,38 @@ const IndexServices = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get('http://localhost:8000/api/services')
+        axios.get('/api/servicesAdmin',{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then((response)=>{
-                setservices(response.data.services);
-                console.log(response.data.services);
+                setservices(response.data);
+                console.log(response.data);
                 setLoading(false);
             })
             .catch((error) =>{
                 console.log(error);
             })
     },[])
+
+    const goModify = (service) => {
+        navigate('/Admin/Services/Edit',{state:{ services : service}})
+    }
     
+    const deleteService = (service) => {
+        axios.delete(`/api/deleteService/${service.id}`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((response)=>{
+                console.log(response)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+    }
     return (
     <>
         <table className='table'>
@@ -77,7 +103,7 @@ const IndexServices = () => {
             <tbody>
             {loading? (
             <tr>
-                <td colSpan="6">Loading...</td>
+                <td colSpan="6"><Loading/></td>
             </tr>)
             : dataMap? (
                 dataMap.map((service) => (
@@ -85,10 +111,10 @@ const IndexServices = () => {
                         <th scope="row">{service.id}</th>
                         <td>{service.nom}</td>
                         <td>{service.description}</td>
-                        <td><img src={'/'+service.image} alt={service.nom} className='w-50 h-25' /></td>
+                        <td><img src={service.image} alt={service.nom} className='img-fluid img-thumbnail' /></td>
                         <td>
-                            <button >Modifier</button>
-                            <button>Supprimer</button>
+                            <button onClick={()=>{goModify(service)}}>Modifier</button>
+                            <button onClick={()=>{deleteService(service)}} >Supprimer</button>
                         </td>
                     </tr>
                     

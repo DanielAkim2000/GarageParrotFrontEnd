@@ -24,7 +24,7 @@ const Footer = (props) => {
                 {(horaires && horaires.map((horaire) => (
                     <ul> 
                         <li key={horaire.id}>
-                            <p key={horaire.jourSemaine}>{ horaire.jourSemaine && horaire.jourSemaine.id }: {horaire.heureOuverture} - {horaire.heureFermeture}</p>
+                            <p key={horaire.jour_semaine}>{ horaire.jour_semaine}: {horaire.heure_ouverture} - {horaire.heure_fermeture}</p>
                         </li> 
                     </ul>        
                 )))}

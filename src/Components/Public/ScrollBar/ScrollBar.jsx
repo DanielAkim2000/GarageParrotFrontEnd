@@ -9,7 +9,7 @@ import { Carte,CardServices,CardTemoignages } from '../../../Components/Public';
 // styles components
 const Container = styled.div`
     width:100%;
-    height:30%;
+    
     position: relative;
     justify-content: center;
     align-items:center;
@@ -23,6 +23,10 @@ const Container = styled.div`
 const DataImage = styled.img`
     width: 100vw;
     height:230px;
+
+    @media screen and (min-width: 1100px){
+        height:400px;
+    }
     
 `
 

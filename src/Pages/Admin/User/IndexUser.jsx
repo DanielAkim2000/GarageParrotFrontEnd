@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
-import axios from 'axios';
-import { Paginator } from '../../../Components/Public';
+import axios from '../../../Api/axios';
+import { Loading, Paginator } from '../../../Components/Public';
+import { useNavigate } from 'react-router-dom';
 
 const IndexUser = () => {
     // state (etats,donees)
@@ -9,6 +10,10 @@ const IndexUser = () => {
         {}
     ]);
     const [loading,setLoading] = useState(true);
+
+    const token = localStorage.getItem("token")
+
+    let navigate = useNavigate();
     
     // donnee pour les paginator
     let nombreElementPages = 5;
@@ -49,12 +54,30 @@ const IndexUser = () => {
         }
     }
 
+    const deleteEmploye = (user) => {
+        axios.delete(`/api/deleteEmploye/${user.id}`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((response)=>{
+                console.log(response)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+    }
+
     useEffect(() => {
         setLoading(true)
-        axios.get('http://localhost:8000/api/employes')
+        axios.get('/api/employes',{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then((response)=>{
-                setUsers(response.data.utilisateurs);
-                console.log(response.data.utilisateurs)
+                setUsers(response.data);
+                console.log(response.data)
             setLoading(false);
             })
             .catch((error) =>{
@@ -62,6 +85,10 @@ const IndexUser = () => {
             })
     },[])
     
+    const goModify = (user) =>{
+        navigate('/Admin/User/Edit',{state:{ utilisateur : user}})
+    }
+
     return (
     <>
         <table className='table'>
@@ -78,7 +105,7 @@ const IndexUser = () => {
             <tbody>
             {loading? (
             <tr>
-                <td colSpan="6">Loading...</td>
+                <td colSpan="6"><Loading/></td>
             </tr>)
             : dataMap? (
                 dataMap.map((user) => (
@@ -89,8 +116,8 @@ const IndexUser = () => {
                         <td>{user.email}</td>
                         <td>{user.password}</td>
                         <td>
-                            <button >Modifier</button>
-                            <button>Supprimer</button>
+                            <button onClick={()=>{goModify(user)}} >Modifier</button>
+                            <button onClick={()=>{deleteEmploye(user)}}>Supprimer</button>
                         </td>
                     </tr>
                     
