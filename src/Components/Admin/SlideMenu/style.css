@@ -1,0 +1,13 @@
+.no-outline {
+    outline: none;
+}
+
+li{
+    list-style-type: none;
+}
+
+@media screen and (max-width: 499px) {
+    .menu {
+      width: 30%;
+    }
+}

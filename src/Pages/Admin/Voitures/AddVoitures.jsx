@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx'
+import axios from '../../../Api/axios.jsx';
+import { FormContainer, FormGroup , Label , Input, FileInput, ErrorMessageContainer, SubmitButton } from '../../../Components/Admin';
+import { useNavigate } from 'react-router-dom';
+
 
 const AddVoitures = () => {
   const [image, setImage] = useState(null);
+  let navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
   };
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
   return (
-    <div>
-      <h1>Formulaire de téléchargement d'image</h1>
+    <FormContainer>
+      <h1>Formulaire de création de voiture</h1>
       <Formik
         initialValues={{
-          marque: '',
-          modele: '',
-          annee_mise_en_circulation: '',
-          prix: '',
-          kilometrage: '',
-          description: '', 
+          marque: null,
+          modele: null,
+          annee_mise_en_circulation: null,
+          prix: null,
+          kilometrage: null,
+          description: null, 
         }}
         validationSchema={Yup.object({
-          marque: Yup.string().required('La marque est requise'),
+          marque: Yup.string().required('La marque est requise et doit etre une chaine de caractère'),
+          modele: Yup.string().required('Le modèle est requis et doit etre une chaine de caractère'),
+          annee_mise_en_circulation: Yup.number().required(`L'année est requise et doit être un nombre`),
+          prix: Yup.number().required('Le prix est requis et doit être un nombre'),
+          kilometrage: Yup.number().required('Le kilométrage est requis et doit être un nombre'),
+          description: Yup.string().required('La description est requise et doit etre une chaine de caractère'),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
           const formData = new FormData();
           formData.append('marque', values.marque);
           formData.append('modele', values.modele);
@@ -44,6 +55,7 @@ const AddVoitures = () => {
           })
             .then((response) => {
                 console.log('Réponse du serveur:', response.data);
+                navigate('/Admin/Voitures/Index');
             })
             .catch((error) => {
                 console.error('Erreur:', error);
@@ -51,50 +63,56 @@ const AddVoitures = () => {
             .finally(() => {
                 setSubmitting(false);
             });
+          }
         }}
       >
         <Form>
-          <div>
-            <label htmlFor="marque">Marque</label>
-            <Field type="text" id="marque" name="marque" />
-            <ErrorMessage name="marque" component="div" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="marque">Marque</Label>
+            <Input type="text" id="marque" name="marque" />
+            <ErrorMessage name="marque" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="modele">Modèle</label>
-            <Field type="text" id="modele" name="modele" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="modele">Modèle</Label>
+            <Input type="text" id="modele" name="modele" />
+            <ErrorMessage name="modele" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="annee_mise_en_circulation">Année de mise en circulation</label>
-            <Field type="text" id="annee_mise_en_circulation" name="annee_mise_en_circulation" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="annee_mise_en_circulation">Année de mise en circulation</Label>
+            <Input type="number" id="annee_mise_en_circulation" name="annee_mise_en_circulation" />
+            <ErrorMessage name="annee_mise_en_circulation" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="prix">Prix</label>
-            <Field type="number" id="prix" name="prix" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="prix">Prix</Label>
+            <Input type="number" id="prix" name="prix" />
+            <ErrorMessage name="prix" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="kilometrage">Kilométrage</label>
-            <Field type="text" id="kilometrage" name="kilometrage" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="kilometrage">Kilométrage</Label>
+            <Input type="number" id="kilometrage" name="kilometrage" />
+            <ErrorMessage name="kilometrage" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="description">Description</label>
-            <Field type="text" id="description" name="description" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="description">Description</Label>
+            <Input type="text" id="description" name="description" />
+            <ErrorMessage name="description" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <input type="file" accept="image/*" name='image' onChange={handleImageChange} />
-          </div>
+          <FormGroup>
+            <FileInput type="file" accept="image/*" name='image' onChange={handleImageChange} />
+          </FormGroup>
 
-          <div>
-            <button type="submit">Télécharger</button>
-          </div>
+          <FormGroup>
+            <SubmitButton type="submit">Télécharger</SubmitButton>
+          </FormGroup>
         </Form>
       </Formik>
-    </div>
+    </FormContainer>
   );
 };
 export { AddVoitures }

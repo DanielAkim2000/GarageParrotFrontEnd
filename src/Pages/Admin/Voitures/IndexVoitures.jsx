@@ -3,6 +3,8 @@ import { useState,useEffect } from 'react';
 import axios from '../../../Api/axios.jsx';
 import { Loading, Paginator } from '../../../Components/Public';
 import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/esm/Button.js';
+import '../style.css';
 
 const IndexVoitures = () => {
     // state (etats,donees)
@@ -10,6 +12,7 @@ const IndexVoitures = () => {
         {}
     ]);
     const [loading,setLoading] = useState(true);
+    const [reload, setReload] = useState(false);
 
     const token = localStorage.getItem("token");
 
@@ -69,36 +72,40 @@ const IndexVoitures = () => {
             .catch((error) =>{
             console.log(error);
             })
-    },[])
+    },[reload])
 
     const goModify = (voiture) => {
         navigate('/Admin/Voitures/Edit',{state:{ voitures : voiture}})
     }
     
     const deleteVoiture = (voiture) => {
-        axios.delete(`/api/deleteVoiture/${voiture.id}`,{
-            headers:{
-                Authorization: `Bearer ${token}`
+        const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
+            axios.delete(`/api/deleteVoiture/${voiture.id}`,{
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then((response)=>{
+                    console.log(response)
+                    setReload(!reload)
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
             }
-        })
-            .then((response)=>{
-                console.log(response)
-            })
-            .catch((error)=>{
-                console.log(error)
-            })
     }
-    
     return (
-        <>
-            <table className='table'>
-                <thead>
+        <div className='table-responsive '>
+        <table className='table table-bordered table-hover'>
+        <thead className='table-dark'>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Marque</th>
                             <th scope="col">Modele</th>
                             <th scope="col">Description</th>
                             <th scope="col">Kilometrage</th>
+                            <th scope="col">Prix</th>
                             <th scope="col">Année de mise en circulation</th>
                             <th scope="col">Image</th>
                             <th scope="col">Actions</th>
@@ -117,11 +124,12 @@ const IndexVoitures = () => {
                             <td>{voiture.modele}</td>
                             <td>{voiture.description}</td>
                             <td>{voiture.kilometrage}</td>
+                            <td>{voiture.prix+'€'}</td>
                             <td>{voiture.annee_mise_en_circulation}</td>
-                            <td><img src={voiture.image} alt={voiture.modele} className='img-fluid img-thumbnail' /></td>
+                            <td className='image-cell'><img src={voiture.image} alt={voiture.modele} className='img-fluid  img-thumbnail' /></td>
                             <td>
-                                <button onClick={()=>{goModify(voiture)}}>Modifier</button>
-                                <button onClick={()=>{deleteVoiture(voiture)}} >Supprimer</button>
+                                <Button className='m-1' onClick={()=>{goModify(voiture)}}>Modifier</Button>
+                                <Button className='m-1' onClick={()=>{deleteVoiture(voiture)}} >Supprimer</Button>
                             </td>
                         </tr>
                         
@@ -137,7 +145,7 @@ const IndexVoitures = () => {
                 </tbody>
             </table>
             <Paginator  data={voitures} nombreElementPages={nombreElementPages} changePage={changePage}/>
-        </>
+        </div>
         );
 }
 

@@ -5,3 +5,4 @@ export * from './NousContacter.jsx';
 export * from './Services.jsx';
 export * from './Voitures.jsx';
 export * from './Avis.jsx';
+export * from './VoituresShow.jsx';

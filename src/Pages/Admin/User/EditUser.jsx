@@ -1,81 +1,95 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/esm/Button";
-import { useState } from "react";
-import axios from "../../../Api/axios";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import axios from '../../../Api/axios.jsx';
+import { FormContainer, FormGroup , Label , Input, SubmitButton,ErrorMessageContainer} from '../../../Components/Admin';
+
 const EditUser = () => {
   const location = useLocation();
-  const user = location.state.utilisateur;
-  const [newuser, setNewuser] = useState({
-    ...user,
-  });
+  const utilisateur = location.state? location.state.utilisateur : null;
+  const token = localStorage.getItem("token");
+  let navigate = useNavigate();
 
-  const token = localStorage.getItem("token")
-  
-  const handleClick = () => {
-    axios.post(`/api/editUsers/${newuser.id}`,newuser,{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((response)=>{
-        console.log(response)
-      })
-      .catch((error)=>{
-        console.log(error)
-      })
-  }
-  console.log(newuser);
   return (
-    <Form.Group className="mb-3">
-      <Form.Label>Prenom:</Form.Label>
-      <Form.Control
-        className="w-50"
-        defaultValue={newuser.firstname}
-        onChange={(event) => {
-          setNewuser({
-            ...newuser,
-            firstname: event.target.value,
-          });
+<FormContainer>
+      <h1>Modifications des données d'employé</h1>
+      <Formik
+        initialValues={{
+          firstname: `${utilisateur.firstname}`,
+          lastname: `${utilisateur.lastname}`,
+          email: `${utilisateur.email}`,
+          password: `${utilisateur.password}`
         }}
-      />
-      <Form.Label>Nom:</Form.Label>
-      <Form.Control
-        className="w-50"
-        defaultValue={newuser.lastname}
-        onChange={(event) => {
-          setNewuser({
-            ...newuser,
-            lastname: event.target.value,
-          });
+        validationSchema={Yup.object({
+          firstname: Yup.string().required('Le prénom est requis et doit être une chaine de caractère'),
+          lastname: Yup.string().required('Le nom est requis et doit être une chaine de caractère'),
+          password: Yup.string().required('Le mot de passe est requis et doit être une chaine de caractère'),
+          email: Yup.string().required(`L'email est requis et doit être une chaine de caractère`),
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
+          const formData = new FormData();
+          formData.append('firstname', values.firstname);
+          formData.append('lastname', values.lastname );
+          formData.append('email', values.email );
+          formData.append('password', values.password );
+          console.log(formData)
+
+          // Utilisez ici l'API pour envoyer le formulaire (par exemple, fetch)
+          axios.post(`/api/editUsers/${utilisateur.id}`,formData,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((response) => {
+                console.log('Réponse du serveur:', response.data);
+                navigate('/Admin/User/Index');
+                // Effectuez ici une redirection ou une autre action après avoir téléchargé les données.
+            })
+            .catch((error) => {
+                console.error('Erreur:', error);
+            })
+            .finally(() => {
+                setSubmitting(false);
+            });
+          }
         }}
-      />
-      <Form.Label>Email:</Form.Label>
-      <Form.Control
-        className="w-50"
-        defaultValue={newuser.email}
-        onChange={(event) => {
-          setNewuser({
-            ...newuser,
-            email: event.target.value,
-          });
-        }}
-      />
-      <Form.Label>Password:</Form.Label>
-      <Form.Control
-        className="w-50"
-        defaultValue={newuser.password}
-        onChange={(event) => {
-          setNewuser({
-            ...newuser,
-            password: event.target.value,
-          });
-        }}
-      />
-      <Button onClick={handleClick}>Enregistrer</Button>
-    </Form.Group>
+      >
+        <Form>
+          <FormGroup>
+            <Label htmlFor="firstname">Prénom:</Label>
+            <Input type="text" id="firstname" name="firstname" />
+            <ErrorMessage name="firstname" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="lastname">Nom:</Label>
+            <Input type="text" id="lastname" name="lastname" />
+            <ErrorMessage name="lastname" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="email">Email:</Label>
+            <Input type="text" id="email" name="email" />
+            <ErrorMessage name="email" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="password">Password:</Label>
+            <Input type="text" id="password" name="password" />
+            <ErrorMessage name="password" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
+          </FormGroup>
+        </Form>
+      </Formik>
+    </FormContainer>
   );
 };
 
 export { EditUser };
+

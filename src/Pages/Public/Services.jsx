@@ -1,6 +1,8 @@
 import Card from 'react-bootstrap/Card'
-import { ScrollBar,Paginator } from '../../Components/Public';
+import { ScrollBar,Paginator, CardTemoignages, ModalsAvis, ModalAfficheAvis } from '../../Components/Public';
 import { useState } from 'react';
+import Button from 'react-bootstrap/esm/Button';
+
 
 
 const Services = (props) =>{
@@ -50,9 +52,9 @@ const Services = (props) =>{
             <>
                 <div className='d-flex flex-row flex-wrap justify-content-center'>
                 { (dataMap) && dataMap.map((service) => (
-                <div className='m-2 '>
-                <Card className="bg-white text-white w-75">
-                    <Card.Img style={{height:'20rem',width : '40rem'}} src={service.image} alt="Card image" />
+                <div className='m-2'>
+                <Card className="bg-white text-white w-100" style={{maxWidth:'400px',minWidth:'200px'}}>
+                    <Card.Img className='w-100 h-sm-25' height={250} src={service.image} alt="Card image" />
                     <Card.ImgOverlay>
                      <Card.Title>{service.nom}</Card.Title>
                     </Card.ImgOverlay>
@@ -64,9 +66,16 @@ const Services = (props) =>{
                 <div className=''>
                     <div style={{textAlign:'center'}} >
                         <h2>Les avis de nos client</h2>
-                        <ScrollBar element='cardTemoignages' auto={false} centerMode={true} data={temoignages} />
-                        <button>Voir tous les avis</button>
-                        <button>Laisser votre avis</button>
+                        <div className='d-flex flex-row flex-wrap justify-content-center align-items-center'>
+                        {temoignages? temoignages.reverse().slice(0,5).map((temoignage)=>(
+                        
+                            <CardTemoignages key={temoignage.id} data={temoignage} width={200}/>
+    
+                        ))
+                        : <>Error</>}
+                        </div>
+                        <ModalAfficheAvis data={temoignages} />
+                        <ModalsAvis />
                     </div>
                 </div>
                 <Paginator  data={services} nombreElementPages={nombreElementPages} changePage={changePage}/>

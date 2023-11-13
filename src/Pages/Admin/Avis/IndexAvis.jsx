@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../../Api/axios.jsx';
-import { Switch } from '../../../Components/Admin';
+import { Etoiles, Switch } from '../../../Components/Admin';
 import { Paginator,Loading } from '../../../Components/Public';
 import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/esm/Button.js';
+import '../style.css';
 
 const IndexAvis = () => {
     // state (etats,donees)
@@ -11,6 +13,7 @@ const IndexAvis = () => {
     ]);
     const [loading,setLoading] = useState(true);
     const navigate = useNavigate();
+    const [reload, setReload] = useState(false);
 
     const token = localStorage.getItem("token");
     
@@ -67,14 +70,31 @@ const IndexAvis = () => {
             .catch((error) =>{
             console.log(error);
             })
-    },[])
+    },[reload])
     const goModify = (avi) =>{
         navigate('/Admin/Avis/Edit',{state:{ avis : avi}})
     }
+    const deleteTemoignage = (avi) => {
+        const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
+        axios.delete(`/api/deleteTemoignage/${avi.id}`,{
+          headers:{
+              Authorization: `Bearer ${token}`
+          }
+      })
+            .then((response)=>{
+                console.log(response)
+                setReload(!reload)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+          }
+      }
     return (
-    <>
-        <table className='table'>
-            <thead>
+        <div className='table-responsive '>
+            <table className='table table-bordered table-hover'>
+            <thead className='table-dark'>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nom</th>
@@ -95,11 +115,11 @@ const IndexAvis = () => {
                         <th scope="row">{avi.id}</th>
                         <td>{avi.nom}</td>
                         <td>{avi.commentaire}</td>
-                        <td>{avi.note}</td>
-                        <td><Switch bool={avi.modere} /></td>
+                        <td><Etoiles note={avi.note} /></td>
+                        <td ><Switch bool={avi.modere} /></td>
                         <td>
-                            <button onClick={()=>{goModify(avi)}}>Modifier</button>
-                            <button>Supprimer</button>
+                            <Button className='m-1'onClick={()=>{goModify(avi)}}>Modifier</Button>
+                            <Button className='m-1' onClick={()=>{deleteTemoignage(avi)}}>Supprimer</Button>
                         </td>
                     </tr>
                     
@@ -115,7 +135,7 @@ const IndexAvis = () => {
             </tbody>
         </table>
         <Paginator  data={avis} nombreElementPages={nombreElementPages} changePage={changePage}/>
-    </>
+    </div>
     );
 
 }

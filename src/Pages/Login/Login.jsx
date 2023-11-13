@@ -30,7 +30,7 @@ const Login = () => {
     }
     
     return (
-        <form className='border-radius bg-warning m-3'>
+        <form className='rounded shadow bg-white m-3'>
         <div className="form-group w-75 m-auto">
             <label for="exampleInputEmail1" className='m-1'>Email:</label>
             <input type="email" onChange={ (e) => { setEmail(e.target.value) } } value={email} className="form-control m-2" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />

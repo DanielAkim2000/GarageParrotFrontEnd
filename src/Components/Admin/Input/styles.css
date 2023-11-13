@@ -1,0 +1,19 @@
+.center {
+    display: flex !important;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+}
+
+.star-rating {
+    display: flex;
+    font-size: 24px;
+}
+
+.star {
+margin-right: 5px; /* Espace entre les étoiles */
+color: #ccc; /* Couleur par défaut (gris) */
+}
+
+.star.yellow {
+color: yellow; /* Couleur jaune pour les étoiles actives */
+}

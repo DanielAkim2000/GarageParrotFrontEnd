@@ -1,15 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Carte,Paginator } from '../../Components/Public';
+import Form from "react-bootstrap/Form";
+import axios from '../../Api/axios.jsx';
 
 
 const Voitures = (props) => {
     let voitures = props.voitures;
 
     // donnee pour les paginator
-    let nombreElementPages = 1;
+    let nombreElementPages = 2;
     const [debut,setDebut] = useState(0);
     const [fin,setFin] = useState(nombreElementPages);
     let dataMap = voitures.slice(debut,fin);
+    let [kilometrage,setKilometrage] = useState(0);
+    let [annee,setAnnee] = useState(0);
+    let [prix,setPrix] = useState(0);
+
+    const [newDataMap, setNewDataMap] = useState(null);
+
+    // filtre dinamique
+    const filtre = () => {
+        axios.post('/filtreVoiture',{
+            kilometrage,
+            annee,
+            prix
+        })
+            .then((response)=>{
+                setNewDataMap(response.data);
+                
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    }
+    newDataMap?dataMap = newDataMap.slice(debut,fin):voitures.slice(debut,fin);
+    console.log(dataMap.length);
+    
+
+    
 
     //Comportements
     const changePage = (e) => {
@@ -47,15 +75,24 @@ const Voitures = (props) => {
     return(
             <>
                 <div>
-                    
+                    <Form> 
+                        <Form.Group className='d-flex flex-row flex-wrap w-100 justify-content-center align-items-center'>
+                            <Form.Label className='m-3 w-25'>Kilométrage:</Form.Label>
+                            <Form.Range className='m-3 w-50' defaultValue={kilometrage} min={100000} max={500000} onChange={(e)=>{setKilometrage(e.target.value); filtre()}}></Form.Range>
+                            <Form.Label className='m-3 w-25'>Prix:</Form.Label>
+                            <Form.Range className='m-3 w-50' defaultValue={prix} min={1000} max={100000} onChange={(e)=>{setPrix(e.target.value); filtre()}}></Form.Range>
+                            <Form.Label className='m-3 w-25'>Année:</Form.Label>
+                            <Form.Range className='m-3 w-50' defaultValue={annee} min={2000} max={2023} onChange={(e)=>{setAnnee(e.target.value);console.log(e.target.value); filtre()}}></Form.Range>
+                        </Form.Group>
+                    </Form>
                 </div>
-                <div className='m-auto'>
-                {dataMap && dataMap.map((voiture)=>(
-                    <Carte key={voiture.id} data={voiture} width={200}/>
+                <div className='m-auto d-flex flex-row flex-wrap justify-content-center'>
+                {dataMap.length? dataMap.map((voiture)=>(
+                    <Carte key={voiture.id} data={voiture} width={250}/>
                     )
-                    )}
+                ):<>Recherche introuvable</>}
                 </div>
-                <Paginator  data={voitures} nombreElementPages={nombreElementPages} changePage={changePage}/>
+                <Paginator  data={newDataMap?newDataMap:voitures} nombreElementPages={nombreElementPages} changePage={changePage}/>
             </>
     )
 }

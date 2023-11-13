@@ -1,23 +1,27 @@
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import Card from 'react-bootstrap/Card';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/esm/Button";
+import { Carte } from '../Card/Carte';
+import { CarteInfo } from '../Card/CarteInfo';
 
-const NousContacter = (props) => {
-  // state (donnees et etats)
+function ModalContact(props) {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const [nom, setNom] = useState(null);
   const [prenom, setPrenom] = useState(null);
   const [email, setEmail] = useState(null);
   const [tel, setTel] = useState(null);
   const [sujet, setSujet] = useState(null);
   const [message, setMessage] = useState(null);
-  const location = useLocation();
-  const data = location.state;
+  const data = props.data
   const [isImgVisible, setIsImgVisible] = useState(false);
 
-  console.log(location.state);
 
   //comportement
 
@@ -43,7 +47,7 @@ const NousContacter = (props) => {
         email: email,
         numero_telephone: tel,
         message: message,
-        sujet: sujet,
+        sujet: isImgVisible? data.marque+' '+data.modele:sujet,
         dataId: data.id,
       })
       .then((response) => {
@@ -55,6 +59,7 @@ const NousContacter = (props) => {
         setTel(null);
         setSujet(null);
         setMessage(null);
+        handleClose();
       })
       .catch((error) => {
         if (error.response) {
@@ -76,9 +81,18 @@ const NousContacter = (props) => {
         console.log(error.config);
       });
   };
-
   return (
-    <div className="d-flex flex-row justify-content-center align-items-center">
+    <>
+      <Button className='m-2' variant="primary" onClick={handleShow}>
+        Contact
+      </Button>
+
+      <Modal show={show}  onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Formulaire de contact</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <div className="d-flex flex-row justify-content-center align-items-center">
       <div>
       <Form>
       <Form.Group>
@@ -152,25 +166,26 @@ const NousContacter = (props) => {
           as="textarea"
         />
       </Form.Group>
-      <Button className="mt-3 mb-3" onClick={addContact}>Envoyer</Button>
     </Form>
       </div>
-      <div>
+      <div className='d-flex flex-start'>
       {isImgVisible ? (
-      <Card className="bg-white shadow text-white w-75 m-3">
-      <Card.Img src={data.image} alt="Card image" />
-      <Card.ImgOverlay>
-        <Card.Title>{data.marque+' '+data.modele}</Card.Title>
-        <Card.Text>
-          C'est une voiture {data.description}
-        </Card.Text>
-        <Card.Text color='blue'>{data.prix}€</Card.Text>
-      </Card.ImgOverlay>
-    </Card>
+      <CarteInfo data={data} width={250} />
     ) : <></> }
       </div>
     </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Fermez
+          </Button>
+          <Button variant="primary" onClick={addContact}>
+            Envoyez
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
-};
+}
 
-export { NousContacter };
+export { ModalContact }

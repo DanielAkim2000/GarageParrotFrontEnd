@@ -1,25 +1,35 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx'
+import axios from '../../../Api/axios.jsx';
+import { FormContainer, FormGroup , Label , Input, SubmitButton, ErrorMessageContainer } from '../../../Components/Admin';
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 const AddUser = () => {
   const token = localStorage.getItem("token");
+  let navigate = useNavigate();
   return (
-    <div>
-      <h1>Formulaire de creation d'utilisateurs</h1>
+    <FormContainer>
+      <h1>Formulaire de création d'employé</h1>
       <Formik
         initialValues={{
-          firstname:'',
-          lastname:'',
-          password:'',
-          email:'',
+          firstname:null,
+          lastname:null,
+          password:null,
+          email:null,
 
         }}
         validationSchema={Yup.object({
-          //marque: Yup.string().required('La marque est requise'),
+          firstname: Yup.string().required('Le prénom est requis et doit être une chaine de caractère'),
+          lastname: Yup.string().required('Le nom est requis et doit être une chaine de caractère'),
+          password: Yup.string().required('Le mot de passe est requis et doit être une chaine de caractère'),
+          email: Yup.string().required(`L'email est requis et doit être une chaine de caractère`),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
           const formData = new FormData();
           formData.append('firstname', values.firstname);
           formData.append('lastname', values.lastname);
@@ -33,6 +43,7 @@ const AddUser = () => {
           })
             .then((response) => {
                 console.log('Réponse du serveur:', response.data);
+                navigate('/Admin/User/Index');
             })
             .catch((error) => {
                 console.error('Erreur:', error);
@@ -41,36 +52,40 @@ const AddUser = () => {
             .finally(() => {
                 setSubmitting(false);
             });
+          }
         }}
       >
         <Form>
-          <div>
-            <label htmlFor="lastname">Nom:</label>
-            <Field type="text" id="lastname" name="lastname" />
-            <ErrorMessage name="marque" component="div" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="lastname">Nom:</Label>
+            <Input type="text" id="lastname" name="lastname" />
+            <ErrorMessage name="lastname" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="firstname">Prénom:</label>
-            <Field type="text" id="firstname" name="firstname" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="firstname">Prénom:</Label>
+            <Input type="text" id="firstname" name="firstname" />
+            <ErrorMessage name="firstname" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="email">Email:</label>
-            <Field type="text" id="email" name="email" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="email">Email:</Label>
+            <Input type="text" id="email" name="email" />
+            <ErrorMessage name="email" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="password">Mot de passe:</label>
-            <Field type="text" id="password" name="password" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="password">Mot de passe:</Label>
+            <Input type="text" id="password" name="password" />
+            <ErrorMessage name="password" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <button type="submit">Télécharger</button>
-          </div>
+          <FormGroup>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
+          </FormGroup>
         </Form>
       </Formik>
-    </div>
+    </FormContainer>
   );
 };
 export { AddUser }

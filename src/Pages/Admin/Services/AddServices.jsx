@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx'
+import axios from '../../../Api/axios.jsx';
+import { FormContainer, FormGroup , Label , Input, FileInput, ErrorMessageContainer, SubmitButton } from '../../../Components/Admin';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const AddServices = () => {
   const [image, setImage] = useState(null);
+  let navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -12,19 +17,21 @@ const AddServices = () => {
   };
 
   const token = localStorage.getItem("token");
-
   return (
-    <div>
-      <h1>Formulaire de téléchargement d'image</h1>
+    <FormContainer>
+      <h1>Formulaire de création de service</h1>
       <Formik
         initialValues={{
-          nom: '',
-          description: '',
+          nom: null,
+          description: null,
         }}
         validationSchema={Yup.object({
-          nom: Yup.string().required('Le nom est requis'),
+          nom: Yup.string().required('Le nom du service est requis et doit être une chaine de caractère'),
+          description: Yup.string().required('La description du service est requise et doit être une chaine de caractère'),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
           const formData = new FormData();
           formData.append('nom', values.nom);
           formData.append('description', values.description || '');
@@ -39,6 +46,7 @@ const AddServices = () => {
         })
             .then((response) => {
                 console.log('Réponse du serveur:', response.data);
+                navigate('/Admin/Services/Index');
                 // Effectuez ici une redirection ou une autre action après avoir téléchargé les données.
             })
             .catch((error) => {
@@ -48,30 +56,32 @@ const AddServices = () => {
             .finally(() => {
                 setSubmitting(false);
             });
+          }
         }}
       >
         <Form>
-          <div>
-            <label htmlFor="nom">Nom</label>
-            <Field type="text" id="nom" name="nom" />
-            <ErrorMessage name="nom" component="div" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="nom">Nom</Label>
+            <Input type="text" id="nom" name="nom" />
+            <ErrorMessage name="nom" component={ErrorMessageContainer}/>
+          </FormGroup>
 
-          <div>
-            <label htmlFor="description">Description</label>
-            <Field as="textarea" id="description" name="description" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="description">Description</Label>
+            <Input type="text" id="description" name="description" />
+            <ErrorMessage name="description" component={ErrorMessageContainer}/>
+          </FormGroup>
 
-          <div>
-            <input type="file" accept="image/*" name='image' onChange={handleImageChange} />
-          </div>
+          <FormGroup>
+            <FileInput type="file" accept="image/*" name='image' onChange={handleImageChange} />
+          </FormGroup>
 
-          <div>
-            <button type="submit">Télécharger</button>
-          </div>
+          <FormGroup>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
+          </FormGroup>
         </Form>
       </Formik>
-    </div>
+    </FormContainer>
   );
 };
 

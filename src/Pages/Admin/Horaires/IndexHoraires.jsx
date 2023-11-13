@@ -3,11 +3,16 @@ import { useState, useEffect } from "react";
 import axios from "../../../Api/axios.jsx";
 import { Loading } from "../../../Components/Public";
 import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/esm/Button.js";
+import '../style.css';
+
+const JoursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
 const IndexHoraires = () => {
   // state (etats,donees)
   const [horaires, setHoraires] = useState([{}]);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -30,13 +35,15 @@ const IndexHoraires = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reload]);
 
   const goModify = (horaire) => {
     navigate("/Admin/Horaires/Edit", { state: { horaires: horaire } });
   };
 
   const deleteHoraire = (horaire) => {
+    const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
     axios.delete(`/api/deleteHoraire/${horaire.id}`,{
       headers:{
           Authorization: `Bearer ${token}`
@@ -44,15 +51,22 @@ const IndexHoraires = () => {
   })
         .then((response)=>{
             console.log(response)
+            setReload(!reload)
         })
         .catch((error)=>{
             console.log(error)
         })
-}
+      }
+  }
+
+  const horairesTries = horaires.sort((a, b) =>
+    JoursSemaine.indexOf(a.jour_semaine) - JoursSemaine.indexOf(b.jour_semaine)
+  );
 
   return (
-    <table className="table">
-      <thead>
+    <div className='table-responsive '>
+    <table className='table table-bordered table-hover'>
+    <thead className='table-dark'>
         <tr>
           <th scope="col">Jour</th>
           <th scope="col">Heure d'ouverture</th>
@@ -68,20 +82,20 @@ const IndexHoraires = () => {
             </td>
           </tr>
         ) : horaires ? (
-          horaires.map((horaire) => (
+          horairesTries.map((horaire) => (
             <tr key={horaire.id}>
               <th scope="row">{horaire.jour_semaine}</th>
               <td>{horaire.heure_ouverture}</td>
               <td>{horaire.heure_fermeture}</td>
               <td>
-                <button
+                <Button className='m-1'
                   onClick={() => {
                     goModify(horaire);
                   }}
                 >
                   Modifier
-                </button>
-                <button onClick={()=>{deleteHoraire(horaire)}}>Supprimer</button>
+                </Button>
+                <Button className='m-1' onClick={()=>{deleteHoraire(horaire)}}>Supprimer</Button>
               </td>
             </tr>
           ))
@@ -92,6 +106,7 @@ const IndexHoraires = () => {
         )}
       </tbody>
     </table>
+    </div>
   );
 };
 

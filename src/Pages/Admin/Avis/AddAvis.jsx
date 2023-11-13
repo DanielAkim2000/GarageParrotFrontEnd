@@ -1,76 +1,127 @@
-import React, { useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React from 'react';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx'
+import axios from '../../../Api/axios.jsx';
+import { FormContainer, FormGroup , Label , Input, ErrorMessageContainer, SubmitButton } from '../../../Components/Admin';
+import { useNavigate } from 'react-router-dom';
 
-const AddAvis = () => {
-  const token = localStorage.getItem("token")
+const SliderField = ({ field, form }) => {
+  const toggleSlider = () => {
+    const newValue = !field.value;
+    form.setFieldValue(field.name, newValue);
+  };
+  
   return (
-    <div>
-      <h1>Formulaire de téléchargement d'image</h1>
-      <Formik
-        initialValues={{
-          nom:'',
-          prenom:'',
-          email:'',
-          
+    <div
+      style={{
+        position: 'relative',
+        width: '50px',
+        height: '20px',
+        backgroundColor: '#ccc',
+        borderRadius: '20px',
+        cursor: 'pointer',
+      }}
+      onClick={toggleSlider}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          width: '20px',
+          height: '20px',
+          backgroundColor: '#2196F3',
+          borderRadius: '50%',
+          transition: '0.4s',
+          transform: field.value ? 'translateX(30px)' : 'translateX(0)',
         }}
-        validationSchema={Yup.object({
-          //marque: Yup.string().required('La marque est requise'),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          const formData = new FormData();
-          formData.append('jour_semaine', values.jour_semaine);
-          formData.append('heure_ouverture', values.heure_ouverture);
-          formData.append('heure_fermeture', values.heure_fermeture);
-          formData.forEach((value, key) => {
-            console.log(key, value);
-          });           
-          axios.post('/api/createHoraire', formData,{
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-          })
-            .then((response) => {
-                console.log('Réponse du serveur:', response.data);
-            })
-            .catch((error) => {
-                console.error('Erreur:', error);
-            })
-            .finally(() => {
-                setSubmitting(false);
-            });
-        }}
-      >
-        <Form>
-          <div>
-            <label htmlFor="jour_semaine">Jour:</label>
-            <Field as="select" id="jour_semaine" name="jour_semaine">
-                {jourSemaine?jourSemaine.map((jour) => (
-                    <option key={jour} value={jour}>
-                    {jour}
-                    </option>
-                )):''}
-            </Field>
-            <ErrorMessage name="marque" component="div" />
-          </div>
-
-          <div>
-            <label htmlFor="heure_ouverture">Heure d'ouverture</label>
-            <Field type="time" id="heure_ouverture" name="heure_ouverture" />
-          </div>
-
-          <div>
-            <label htmlFor="heure_fermeture">Heure de fermeture</label>
-            <Field type="time" id="heure_fermeture" name="heure_fermeture" />
-          </div>
-
-          <div>
-            <button type="submit">Télécharger</button>
-          </div>
-        </Form>
-      </Formik>
+      />
     </div>
   );
 };
-export { AddAvis }
+
+const AddAvis = () => {
+  const token = localStorage.getItem('token');
+  let navigate = useNavigate();
+  return (
+    <FormContainer>
+      <h1>Formulaire de création d'avis</h1>
+      <Formik
+        initialValues={{
+          nom: '',
+          commentaire: '',
+          note: '',
+          modere: false,
+        }}
+        validationSchema={Yup.object({
+          nom: Yup.string().required('La marque est requise et doit être une chaine de caractère'),
+          commentaire: Yup.string().required('Le commenataire est requis et doit être une chaine de caractère'),
+          note: Yup.number()
+            .min(0, 'La note ne peut pas être inférieure à 0')
+            .max(5, 'La note ne peut pas dépasser 5')
+            .required('La note est requise et doit être un chiffre'),
+          modere: Yup.boolean(),
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
+          const formData = new FormData();
+          formData.append('nom', values.nom);
+          formData.append('commentaire', values.commentaire);
+          formData.append('note', values.note);
+          formData.append('modere', values.modere);
+          formData.forEach((value, key) => {
+            console.log(key, value);
+          });
+          axios
+            .post('/api/createTemoignage', formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((response) => {
+              console.log('Réponse du serveur:', response.data);
+              navigate('/Admin/Avis/Index');
+            })
+            .catch((error) => {
+              console.error('Erreur:', error);
+            })
+            .finally(() => {
+              setSubmitting(false);
+            });
+          }
+        }}
+      >
+        <Form>
+          <FormGroup>
+            <Label htmlFor="nom">Nom:</Label>
+            <Input type="text" id="nom" name="nom" />
+            <ErrorMessage name="nom" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="commentaire">Commentaire</Label>
+            <Input type="text" id="commentaire" name="commentaire" />
+            <ErrorMessage name="commentaire" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="note">Note</Label>
+            <Input type="number" id="note" name="note" />
+            <ErrorMessage name="note" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="modere">Activer/Désactiver :</Label>
+            <Input name="modere" component={SliderField} />
+            <ErrorMessage name="modere" component={ErrorMessageContainer} />
+          </FormGroup>
+
+          <FormGroup>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
+          </FormGroup>
+        </Form>
+      </Formik>
+    </FormContainer>
+  );
+};
+
+export { AddAvis };

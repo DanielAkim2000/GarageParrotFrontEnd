@@ -12,7 +12,7 @@ const AuthGuard = ({ children }) => {
         setExpired(true);
         clearInterval(checkTokenExpirationInterval);
       }
-    }, 600000);
+    }, 3600);
 
     return () => clearInterval(checkTokenExpirationInterval);
   }, []);

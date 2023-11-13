@@ -3,6 +3,8 @@ import { useState,useEffect } from 'react';
 import axios from '../../../Api/axios.jsx';
 import { Loading, Paginator } from '../../../Components/Public';
 import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/esm/Button.js';
+import '../style.css';
 
 const IndexServices = () => {
        // state (etats,donees)
@@ -10,6 +12,7 @@ const IndexServices = () => {
         {}
     ]);
     const [loading,setLoading] = useState(true);
+    const [reload, setReload] = useState(false);
 
     const navigate = useNavigate();
 
@@ -69,13 +72,15 @@ const IndexServices = () => {
             .catch((error) =>{
                 console.log(error);
             })
-    },[])
+    },[reload])
 
     const goModify = (service) => {
         navigate('/Admin/Services/Edit',{state:{ services : service}})
     }
     
     const deleteService = (service) => {
+        const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
         axios.delete(`/api/deleteService/${service.id}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -83,15 +88,17 @@ const IndexServices = () => {
         })
             .then((response)=>{
                 console.log(response)
+                setReload(!reload)
             })
             .catch((error)=>{
                 console.log(error)
             })
+        }
     }
     return (
-    <>
-        <table className='table'>
-            <thead>
+        <div className='table-responsive '>
+        <table className='table table-bordered table-hover'>
+        <thead className='table-dark'>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nom</th>
@@ -111,10 +118,10 @@ const IndexServices = () => {
                         <th scope="row">{service.id}</th>
                         <td>{service.nom}</td>
                         <td>{service.description}</td>
-                        <td><img src={service.image} alt={service.nom} className='img-fluid img-thumbnail' /></td>
+                        <td className='image-cell'><img src={service.image} alt={service.nom} className='img-fluid img-thumbnail' /></td>
                         <td>
-                            <button onClick={()=>{goModify(service)}}>Modifier</button>
-                            <button onClick={()=>{deleteService(service)}} >Supprimer</button>
+                            <Button className='m-1' onClick={()=>{goModify(service)}}>Modifier</Button>
+                            <Button className='m-1' onClick={()=>{deleteService(service)}} >Supprimer</Button>
                         </td>
                     </tr>
                     
@@ -130,7 +137,7 @@ const IndexServices = () => {
             </tbody>
         </table>
         <Paginator  data={services} nombreElementPages={nombreElementPages} changePage={changePage}/>
-    </>
+    </div>
         );
 }
 

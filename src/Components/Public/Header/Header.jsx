@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import logo from '../../../logo.jpg'
+import styled from 'styled-components';
+import logo from '../../../logo.jpg';
 import React, { useEffect,useState } from 'react';
 import './Header.css';
 import { Link,useLocation,useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
                 grid-template-areas: "logo logo nameofsite input nav nav";
         }
         @media screen and (min-width: ${sizeScreenBig}) {
-            grid-template-areas: "logo logo logo logo nameofsite nav nav input";
+            grid-template-areas: "logo logo logo logo nameofsite input nav nav";
         }
     `
     
@@ -39,16 +39,18 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
         max-height: 3rem;
         grid-area: logo;
         justify-items: start;
+        justify-self: start;
 
     `
     const Nav = styled.nav`
         justify-items: center;
         grid-area: nav;
         justify-self:stretch;
+
     `
     const NavButton = styled.button`
         margin-right: 10px;
-        justify-items:end;
+        justify-self:end;
         grid-area:navbutton;
         @media screen and (min-width: 700px){
             display:none;
@@ -116,7 +118,9 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
             if (location.pathname === '/' || location.pathname === '/Services' || location.pathname === '/Voitures' || location.pathname === '/NousContacter' ) {
             // Si vous êtes déjà sur la page d'accueil, faites défiler vers le haut
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            setIsNavVisible(false)
             } else {
+                setIsNavVisible(false)
             // Sinon, naviguez vers la page d'accueil
             history('/');
             }
@@ -167,7 +171,7 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
                         </UL>
                     </Nav>
                 )}
-                <NavButton className={`bouton-hamburger`} onClick={toggle}></NavButton>
+                <NavButton className={`bouton-hamburger `} onClick={toggle}></NavButton>
             </Container>
         )
     }

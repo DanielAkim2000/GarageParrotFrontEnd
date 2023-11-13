@@ -2,11 +2,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "../../../Api/axios.jsx";
 import { Loading } from "../../../Components/Public";
-
+import Button from "react-bootstrap/esm/Button.js";
+import '../style.css';
 const IndexContact = () => {
   // state (etats,donees)
   const [contacts, setContacts] = useState([{}]);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
 
   const token = localStorage.getItem("token");
   //comportement
@@ -27,9 +29,11 @@ const IndexContact = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reload]);
 
   const deleteContact = (contact) => {
+    const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
     axios.delete(`/api/deleteContact/${contact.id}`,{
       headers:{
           Authorization: `Bearer ${token}`
@@ -37,15 +41,18 @@ const IndexContact = () => {
   })
         .then((response)=>{
             console.log(response)
+            setReload(!reload)
         })
         .catch((error)=>{
             console.log(error)
         })
+      }
 }
 
   return (
-    <table className="table">
-      <thead>
+    <div className='table-responsive '>
+    <table className='table table-bordered table-hover'>
+    <thead className='table-dark'>
         <tr>
           <th scope="col">Nom</th>
           <th scope="col">Prenom</th>
@@ -73,7 +80,7 @@ const IndexContact = () => {
               <td>{contact.message}</td>
               <td>{contact.sujet}</td>
               <td>
-                <button onClick={()=>{deleteContact(contact)}}>Supprimer</button>
+                <Button onClick={()=>{deleteContact(contact)}}>Supprimer</Button>
               </td>
             </tr>
           ))
@@ -84,6 +91,7 @@ const IndexContact = () => {
         )}
       </tbody>
     </table>
+    </div>
   );
 };
 

@@ -8,6 +8,7 @@ import { AddServices,DeleteServices,EditServices,IndexServices } from '../Pages/
 import { AddVoitures,DeleteVoitures,EditVoitures,IndexVoitures } from '../Pages/Admin/';
 import { DeleteAvis,EditAvis,IndexAvis } from '../Pages/Admin/';
 import { AddHoraires,DeleteHoraires,EditHoraires,IndexHoraires } from '../Pages/Admin'
+import { AddAvis } from '../Pages/Admin/Avis/AddAvis.jsx'
 
 
 export default function AdminRouter() {
@@ -43,6 +44,7 @@ export default function AdminRouter() {
         <Route path='/Avis'>
           <Route index element={<IndexAvis />} />
 
+          <Route path='/Avis/Add' element={<AddAvis />} />
           <Route path='/Avis/Edit' element={<EditAvis />} />
           <Route path='/Avis/Delete' element={<DeleteAvis />} />
           <Route path='/Avis/Index' element={<IndexAvis />} />

@@ -1,13 +1,17 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState } from 'react';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from '../../../Api/axios.jsx';
-import { useState } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FormContainer, FormGroup , Label , Input, FileInput, ErrorMessageContainer, SubmitButton, ImageInput } from '../../../Components/Admin';
+
+
+
 const EditServices = () => {
   const location = useLocation();
-  const service = location.state.services;
+  const service = location.state? location.state.services : null;
   const [image, setImage] = useState(null);
+  let navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -15,23 +19,27 @@ const EditServices = () => {
   };
 
   const token = localStorage.getItem("token");
-  
+
+
+
   return (
-<div>
-      <h1>Formulaire de téléchargement d'image</h1>
+    <FormContainer>
+      <h1>Modifications des données du service</h1>
       <Formik
         initialValues={{
           nom: `${service.nom}`,
-          description: `${service.description}`,
+          description: service.description,
         }}
         validationSchema={Yup.object({
-          nom: Yup.string().required('Le nom est requis'),
-          image: Yup.mixed(),
+          nom: Yup.string().required('Le nom du service est requis et doit être une chaine de caractère'),
+          description: Yup.string().required('La description du service est requise et doit être une chaine de caractère'),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
           const formData = new FormData();
           formData.append('nom', values.nom);
-          formData.append('description', values.description || '');
+          formData.append('description', values.description);
           formData.append('image', image);
           console.log(formData)
 
@@ -43,6 +51,7 @@ const EditServices = () => {
         })
             .then((response) => {
                 console.log('Réponse du serveur:', response.data);
+                navigate('/Admin/Services/Index');
                 // Effectuez ici une redirection ou une autre action après avoir téléchargé les données.
             })
             .catch((error) => {
@@ -52,35 +61,38 @@ const EditServices = () => {
             .finally(() => {
                 setSubmitting(false);
             });
+          }
         }}
       >
         <Form>
-          <div>
-            <label htmlFor="nom">Nom</label>
-            <Field type="text" id="nom" name="nom" />
-            <ErrorMessage name="nom" component="div" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="nom">Nom</Label>
+            <Input type="text" id="nom" name="nom" />
+            <ErrorMessage name="nom" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="description">Description</label>
-            <Field as="textarea" id="description" name="description" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="description">Description</Label>
+            <Input type="text" id="description" name="description" />
+            <ErrorMessage name="description" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label>Image</label>
-            <img src={service.image} alt="" />
-          </div>
+          <FormGroup>
+            <Label>Image</Label>
+            <ImageInput src={service?service.image:null} alt="" />
+          </FormGroup>
 
-          <div>
-            <input type="file" accept="image/*" name='image' onChange={handleImageChange} />
-          </div>
 
-          <div>
-            <button type="submit">Télécharger</button>
-          </div>
+          <FormGroup>
+            <FileInput type="file" accept="image/*" name='image' onChange={handleImageChange} />
+          </FormGroup>
+
+          <FormGroup>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
+          </FormGroup>
         </Form>
       </Formik>
-    </div>
+    </FormContainer>
   );
 };
 

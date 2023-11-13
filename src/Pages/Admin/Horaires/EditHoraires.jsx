@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useLocation } from "react-router-dom";
+import { Formik, Form, ErrorMessage, Field } from 'formik';
+import { useLocation, useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx'
+import axios from '../../../Api/axios.jsx';
+import { FormContainer, FormGroup , Label , Input, ErrorMessageContainer, SubmitButton } from '../../../Components/Admin';
+
+
 
 const EditHoraires = () => {
   const location = useLocation();
-  const horaire = location.state.horaires;
+  const horaire = location.state? location.state.horaires : null;
+  let navigate = useNavigate();
   const [jourSemaine,setJourSemaine] = useState([])
   useEffect(()=>{
     axios.get('/jour')
@@ -18,11 +22,10 @@ const EditHoraires = () => {
         })
     },[])
 
-  const token = localStorage.getItem("token")
-
+  const token = localStorage.getItem("token");
   return (
-    <div>
-      <h1>Formulaire de téléchargement d'image</h1>
+    <FormContainer>
+      <h1>Modification Horaire</h1>
       <Formik
         initialValues={{
           jour_semaine: `${horaire.jour_semaine}`,
@@ -35,6 +38,8 @@ const EditHoraires = () => {
             heure_fermeture: Yup.string().required('L\'heure de fermeture est requise'),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
           const formData = new FormData();
           formData.append('jour_semaine', values.jour_semaine);
           formData.append('heure_ouverture', values.heure_ouverture);
@@ -47,6 +52,7 @@ const EditHoraires = () => {
           })
             .then((response) => {
                 console.log('Réponse du serveur:', response.data);
+                navigate('/Admin/Horaires/Index');
             })
             .catch((error) => {
                 console.error('Erreur:', error);
@@ -54,11 +60,12 @@ const EditHoraires = () => {
             .finally(() => {
                 setSubmitting(false);
             });
+          }
         }}
       >
         <Form>
-        <div>
-            <label htmlFor="jour_semaine">Jour:</label>
+        <FormGroup>
+            <Label htmlFor="jour_semaine">Jour:</Label>
             <Field as="select" id="jour_semaine" name="jour_semaine">
                 {jourSemaine?jourSemaine.map((jour) => (
                     <option key={jour} value={jour}>
@@ -67,24 +74,24 @@ const EditHoraires = () => {
                 )):''}
             </Field>
             <ErrorMessage name="marque" component="div" />
-          </div>
+          </FormGroup>
 
-          <div>
-            <label htmlFor="heure_ouverture">Heure d'ouverture</label>
-            <Field type="time" id="heure_ouverture" name="heure_ouverture" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="heure_ouverture">Heure d'ouverture</Label>
+            <Input type="time" id="heure_ouverture" name="heure_ouverture" />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="heure_fermeture">Heure de fermeture</label>
-            <Field type="time" id="heure_fermeture" name="heure_fermeture" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="heure_fermeture">Heure de fermeture</Label>
+            <Input type="time" id="heure_fermeture" name="heure_fermeture" />
+          </FormGroup>
 
-          <div>
-            <button type="submit">Télécharger</button>
-          </div>
+          <FormGroup>
+            <SubmitButton type="submit">Enregister</SubmitButton>
+          </FormGroup>
         </Form>
       </Formik>
-    </div>
+    </FormContainer>
   );
 };
 

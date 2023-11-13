@@ -1,37 +1,46 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useLocation } from "react-router-dom";
+import { Formik, Form, ErrorMessage } from 'formik';
+import { useLocation, useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx'
+import axios from '../../../Api/axios.jsx';
+import { FormContainer, FormGroup , Label , Input, FileInput, ErrorMessageContainer, SubmitButton, ImageInput } from '../../../Components/Admin';
 
 const EditVoitures = () => {
   const [image, setImage] = useState(null);
+  let navigate = useNavigate();
 
   const location = useLocation();
-  const voiture = location.state.voitures;
+  const voiture = location.state? location.state.voitures : null;
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
   };
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
   return (
-    <div>
-      <h1>Formulaire de téléchargement d'image</h1>
+    <FormContainer>
+      <h1>Modifications des données de voiture</h1>
       <Formik
         initialValues={{
-          marque: `${voiture.marque}`,
-          modele: `${voiture.modele}`,
-          annee_mise_en_circulation: `${voiture.annee_mise_en_circulation}`,
-          prix: `${voiture.prix}`,
-          kilometrage: `${voiture.kilometrage}`,
-          description: `${voiture.description}`, 
+          marque: `${voiture?voiture.marque:null}`,
+          modele: `${voiture?voiture.modele:null}`,
+          annee_mise_en_circulation: `${voiture?voiture.annee_mise_en_circulation:null}`,
+          prix: `${voiture?voiture.prix:null}`,
+          kilometrage: `${voiture?voiture.kilometrage:null}`,
+          description: `${voiture?voiture.description:null}`, 
         }}
         validationSchema={Yup.object({
-          marque: Yup.string().required('La marque est requise'),
+          marque: Yup.string().required('La marque est requise et doit etre une chaine de caractère'),
+          modele: Yup.string().required('Le modèle est requis et doit etre une chaine de caractère'),
+          annee_mise_en_circulation: Yup.number().required(`L'année est requise et doit être un nombre`),
+          prix: Yup.number().required('Le prix est requis et doit être un nombre'),
+          kilometrage: Yup.number().required('Le kilométrage est requis et doit être un nombre'),
+          description: Yup.string().required('La description est requise et doit etre une chaine de caractère'),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
           const formData = new FormData();
           formData.append('marque', values.marque);
           formData.append('modele', values.modele);
@@ -41,13 +50,14 @@ const EditVoitures = () => {
           formData.append('description', values.description);
           formData.append('image', image);
 
-          axios.post(`/api/editVoiture/${voiture.id}`, formData,{
+          axios.post(`/api/editVoiture/${voiture?voiture.id:null}`, formData,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
           })
             .then((response) => {
                 console.log('Réponse du serveur:', response.data);
+                navigate('/Admin/Voitures/Index');
             })
             .catch((error) => {
                 console.error('Erreur:', error);
@@ -55,55 +65,61 @@ const EditVoitures = () => {
             .finally(() => {
                 setSubmitting(false);
             });
+          }
         }}
       >
         <Form>
-          <div>
-            <label htmlFor="marque">Marque</label>
-            <Field type="text" id="marque" name="marque" />
-            <ErrorMessage name="marque" component="div" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="marque">Marque</Label>
+            <Input type="text" id="marque" name="marque" />
+            <ErrorMessage name="marque" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="modele">Modèle</label>
-            <Field type="text" id="modele" name="modele" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="modele">Modèle</Label>
+            <Input type="text" id="modele" name="modele" />
+            <ErrorMessage name="modele" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="annee_mise_en_circulation">Année de mise en circulation</label>
-            <Field type="text" id="annee_mise_en_circulation" name="annee_mise_en_circulation" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="annee_mise_en_circulation">Année de mise en circulation</Label>
+            <Input type="number" id="annee_mise_en_circulation" name="annee_mise_en_circulation" />
+            <ErrorMessage name="annee_mise_en_circulation" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="prix">Prix</label>
-            <Field type="number" id="prix" name="prix" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="prix">Prix</Label>
+            <Input type="number" id="prix" name="prix" />
+            <ErrorMessage name="prix" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="kilometrage">Kilométrage</label>
-            <Field type="text" id="kilometrage" name="kilometrage" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="kilometrage">Kilométrage</Label>
+            <Input type="number" id="kilometrage" name="kilometrage" />
+            <ErrorMessage name="kilometrage" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label htmlFor="description">Description</label>
-            <Field type="text" id="description" name="description" />
-          </div>
+          <FormGroup>
+            <Label htmlFor="description">Description</Label>
+            <Input type="text" id="description" name="description" />
+            <ErrorMessage name="description" component={ErrorMessageContainer} />
+          </FormGroup>
 
-          <div>
-            <label>Image</label>
-            <img src={voiture.image} alt="" />
-          </div>
+          <FormGroup>
+            <Label>Image</Label>
+            <ImageInput src={voiture?voiture.image:null} alt="" />
+          </FormGroup>
 
-          <div>
-            <input type="file" accept="image/*" name='image' onChange={handleImageChange} />
-          </div>
+          <FormGroup>
+            <FileInput type="file" accept="image/*" name='image' onChange={handleImageChange} />
+          </FormGroup>
 
-          <div>
-            <button type="submit">Télécharger</button>
-          </div>
+          <FormGroup>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
+          </FormGroup>
         </Form>
       </Formik>
-    </div>
+    </FormContainer>
   );
 };
 export { EditVoitures };

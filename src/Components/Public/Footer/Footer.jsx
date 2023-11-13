@@ -1,42 +1,73 @@
-import styled from 'styled-components'
-import React from 'react';
-import './Footer.css';
-
+import styled from "styled-components";
+import React from "react";
+import "./Footer.css";
+import {
+    MDBFooter,
+    MDBContainer,
+    MDBCol,
+    MDBRow,
+  } from 'mdb-react-ui-kit';
+import { Link } from "react-router-dom";
+  
 const CustomFooter = styled.footer`
-    display: grid;
-    grid-area-templates: 
-        " horaires "
-        " options "
-        " basdepage "
-    ;
-    place-items: center;
-    background-color: black;
-    color: white;
-`
+  display: grid;
+  grid-area-templates: " horaires " " options " " basdepage ";
+  place-items: center;
+  background-color: black;
+  color: white;
+`;
+
+const JoursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
 const Footer = (props) => {
-    // données
-    let horaires = props.data;
+  // données
+  let horaires = props.data;
+  const horairesTries = horaires.sort((a, b) =>
+    JoursSemaine.indexOf(a.jour_semaine) - JoursSemaine.indexOf(b.jour_semaine)
+  );
 
-    return(
-        <CustomFooter>
-            <div className='horaires'>
-                {(horaires && horaires.map((horaire) => (
-                    <ul> 
-                        <li key={horaire.id}>
-                            <p key={horaire.jour_semaine}>{ horaire.jour_semaine}: {horaire.heure_ouverture} - {horaire.heure_fermeture}</p>
-                        </li> 
-                    </ul>        
-                )))}
-            </div>
-            <div>
-                Options
-            </div>
-            <div>
+  return (
+    <CustomFooter className="mt-3">
+    <MDBFooter className='text-center w-100' color='white' bgColor='dark'>
+      <MDBContainer className='p-4'>
+        <section className='mb-4'>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum repellat quaerat
+            voluptatibus placeat nam, commodi optio pariatur est quia magnam eum harum corrupti dicta, aliquam
+            sequi voluptate quas.
+          </p>
+        </section>
 
-            </div>
-        </CustomFooter>
-    )
-}
+        <section className=''>
+          <MDBRow>
+            {horaires &&
+            horairesTries.map((horaire) => (
+                <MDBCol lg='3' md='6' className='mb-4 mb-md-0'>
+                <h5 className='text-uppercase'>{horaire.jour_semaine}</h5>
+                <ul className='list-unstyled mb-0'>
+                <li>
+                  <p className='text-white'>
+                    {(horaire.heure_ouverture==='00:00'&&horaire.heure_fermeture==='00:00')? 'Fermé':
+                     horaire.heure_ouverture+" - "+horaire.heure_fermeture
+                    }
+                  </p>
+                </li>
+                </ul>
+                </MDBCol>
+            ))}
+         </MDBRow>
+        </section>
+      </MDBContainer>
+
+      <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+        © 2023 Copyright:
+        <Link className='text-white' to='/Home'>
+          Accueil
+        </Link>
+      </div>
+    </MDBFooter>
+    </CustomFooter>
+  );
+};
 
 export { Footer };

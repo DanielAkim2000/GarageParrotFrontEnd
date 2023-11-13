@@ -1,0 +1,99 @@
+/* Dans votre fichier CSS (par exemple, styles.css) */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    max-width: 100vw;
+  }
+  
+  .table th,
+  .table td {/* Couleur et épaisseur des bordures */
+    padding: 8px; /* Espace à l'intérieur de la cellule */
+    text-align: left; /* Alignement du texte (ajustez selon vos besoins) */
+    max-height: 100px; /* Hauteur maximale pour les cellules */
+    overflow: hidden; /* Cacher le contenu qui dépasse */
+    white-space: nowrap; /* Empêcher le texte de se casser */
+    text-overflow: ellipsis; /* Afficher "..." pour le texte qui dépasse */
+    text-align: center; /* Centrer le texte horizontalement */
+    vertical-align: middle;
+    max-width: 250px;
+  }
+  
+  /* Style pour la première ligne (en-tête) */
+  .table thead th {
+    font-weight: bold; /* Texte en gras */
+  }
+  
+  /* Style pour les lignes impaires */
+
+  .image-cell img {
+    max-height: 40px; /* Hauteur maximale pour les images */
+    max-width: 100%; /* Assurez-vous que l'image ne dépasse pas la largeur de la cellule */
+    display: block; /* Pour éviter tout espace supplémentaire sous l'image */
+    margin: 0 auto;
+  }
+
+  .center {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+}
+
+.outlet
+{
+  width: 100%;
+  margin-left: 3px;
+}
+
+@media screen and (max-width: 499px) {
+  .outlet {
+    width: 50%;
+    margin-left: 5px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .outlet {
+    max-width: 63%;
+    margin-left: 5px;
+  }
+}
+
+@media screen and (max-width: 699px) {
+  .outlet {
+    width: 70%;
+    margin-left: 5px;
+  }
+}
+@media screen and (max-width: 799px) {
+  .outlet {
+    width: 76%;
+    margin-left: 5px;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .outlet {
+    width: 79%;
+    margin-left: 5px;
+  }
+}
+@media screen and (max-width: 1199px) {
+  .outlet {
+    width: 82%;
+    margin-left: 5px;
+  }
+}
+
+@media screen and (max-width: 1283px) {
+  .outlet {
+    width: 85%;
+    margin-left: 5px;
+  }
+}
+@media screen and (max-width: 1283px) {
+  .outlet {
+    width: 85%;
+    margin-left: 5px;
+  }
+}

@@ -3,6 +3,8 @@ import { useState,useEffect } from 'react';
 import axios from '../../../Api/axios';
 import { Loading, Paginator } from '../../../Components/Public';
 import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/esm/Button';
+import '../style.css';
 
 const IndexUser = () => {
     // state (etats,donees)
@@ -10,6 +12,7 @@ const IndexUser = () => {
         {}
     ]);
     const [loading,setLoading] = useState(true);
+    const [reload, setReload] = useState(false);
 
     const token = localStorage.getItem("token")
 
@@ -55,6 +58,8 @@ const IndexUser = () => {
     }
 
     const deleteEmploye = (user) => {
+        const response = window.confirm("Voulez-vous continuer ?");
+          if(response){
         axios.delete(`/api/deleteEmploye/${user.id}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -62,10 +67,12 @@ const IndexUser = () => {
         })
             .then((response)=>{
                 console.log(response)
+                setReload(!reload)
             })
             .catch((error)=>{
                 console.log(error)
             })
+          }
     }
 
     useEffect(() => {
@@ -83,16 +90,16 @@ const IndexUser = () => {
             .catch((error) =>{
             console.log(error);
             })
-    },[])
+    },[reload])
     
     const goModify = (user) =>{
         navigate('/Admin/User/Edit',{state:{ utilisateur : user}})
     }
 
     return (
-    <>
-        <table className='table'>
-            <thead>
+        <div className='table-responsive '>
+            <table className='table table-bordered table-hover'>
+            <thead className='table-dark'>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Prenom</th>
@@ -116,8 +123,8 @@ const IndexUser = () => {
                         <td>{user.email}</td>
                         <td>{user.password}</td>
                         <td>
-                            <button onClick={()=>{goModify(user)}} >Modifier</button>
-                            <button onClick={()=>{deleteEmploye(user)}}>Supprimer</button>
+                            <Button className='m-1' onClick={()=>{goModify(user)}} >Modifier</Button>
+                            <Button className='m-1' onClick={()=>{deleteEmploye(user)}}>Supprimer</Button>
                         </td>
                     </tr>
                     
@@ -133,7 +140,7 @@ const IndexUser = () => {
             </tbody>
         </table>
         <Paginator  data={users} nombreElementPages={nombreElementPages} changePage={changePage}/>
-    </>
+    </div>
         );
 }
 
