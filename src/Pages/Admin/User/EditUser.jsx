@@ -1,59 +1,75 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx';
-import { FormContainer, FormGroup , Label , Input, SubmitButton,ErrorMessageContainer} from '../../../Components/Admin';
+import { Formik, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import axios from "../../../Api/axios.jsx";
+import {
+  FormContainer,
+  FormGroup,
+  Label,
+  Input,
+  SubmitButton,
+  ErrorMessageContainer,
+} from "../../../Components/Admin";
 
 const EditUser = () => {
   const location = useLocation();
-  const utilisateur = location.state? location.state.utilisateur : null;
+  const utilisateur = location.state ? location.state.utilisateur : null;
   const token = localStorage.getItem("token");
   let navigate = useNavigate();
 
   return (
-<FormContainer>
+    <FormContainer>
       <h1>Modifications des données d'employé</h1>
       <Formik
         initialValues={{
           firstname: `${utilisateur.firstname}`,
           lastname: `${utilisateur.lastname}`,
           email: `${utilisateur.email}`,
-          password: `${utilisateur.password}`
+          password: `${utilisateur.password}`,
         }}
         validationSchema={Yup.object({
-          firstname: Yup.string().required('Le prénom est requis et doit être une chaine de caractère'),
-          lastname: Yup.string().required('Le nom est requis et doit être une chaine de caractère'),
-          password: Yup.string().required('Le mot de passe est requis et doit être une chaine de caractère'),
-          email: Yup.string().required(`L'email est requis et doit être une chaine de caractère`),
+          firstname: Yup.string().required(
+            "Le prénom est requis et doit être une chaine de caractère"
+          ),
+          lastname: Yup.string().required(
+            "Le nom est requis et doit être une chaine de caractère"
+          ),
+          password: Yup.string().required(
+            "Le mot de passe est requis et doit être une chaine de caractère"
+          ),
+          email: Yup.string().required(
+            `L'email est requis et doit être une chaine de caractère`
+          ),
         })}
         onSubmit={(values, { setSubmitting }) => {
           const response = window.confirm("Voulez-vous continuer ?");
-          if(response){
-          const formData = new FormData();
-          formData.append('firstname', values.firstname);
-          formData.append('lastname', values.lastname );
-          formData.append('email', values.email );
-          formData.append('password', values.password );
-          console.log(formData)
+          if (response) {
+            const formData = new FormData();
+            formData.append("firstname", values.firstname);
+            formData.append("lastname", values.lastname);
+            formData.append("email", values.email);
+            formData.append("password", values.password);
+            console.log(formData);
 
-          // Utilisez ici l'API pour envoyer le formulaire (par exemple, fetch)
-          axios.post(`/api/editUsers/${utilisateur.id}`,formData,{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                console.log('Réponse du serveur:', response.data);
-                navigate('/Admin/User/Index');
+            // Utilisez ici l'API pour envoyer le formulaire (par exemple, fetch)
+            axios
+              .post(`/api/editUsers/${utilisateur.id}`, formData, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                console.log("Réponse du serveur:", response.data);
+                navigate("/Admin/User/Index");
                 // Effectuez ici une redirection ou une autre action après avoir téléchargé les données.
-            })
-            .catch((error) => {
-                console.error('Erreur:', error);
-            })
-            .finally(() => {
+              })
+              .catch((error) => {
+                console.error("Erreur:", error);
+              })
+              .finally(() => {
                 setSubmitting(false);
-            });
+              });
           }
         }}
       >
@@ -92,4 +108,3 @@ const EditUser = () => {
 };
 
 export { EditUser };
-

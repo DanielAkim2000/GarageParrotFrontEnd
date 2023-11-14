@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import styled from "styled-components";
-import './style.css';
+import "./style.css";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -10,13 +10,10 @@ const StyledLink = styled(Link)`
   color: black;
 `;
 
-
-
 const SlideMenu = () => {
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
   const userRoles = decodedToken ? decodedToken.roles : [];
-
 
   const [showServices, setShowServices] = useState(false);
   const [showEmploye, setShowEmploye] = useState(false);
@@ -24,12 +21,9 @@ const SlideMenu = () => {
   const [showAvis, setShowAvis] = useState(false);
   const [showVoitures, setShowVoitures] = useState(false);
   return (
-    <ul className="p-2 menu" style={{ paddingRight: "10px", paddingBottom: 0}}>
+    <ul className="p-2 menu" style={{ paddingRight: "10px", paddingBottom: 0 }}>
       <li className="border-bottom border-dark  w-75">
-        <button
-          className="btn  align-items-center rounded"
-          to="/Admin"
-        >
+        <button className="btn  align-items-center rounded" to="/Admin">
           Accueil
         </button>
       </li>
@@ -45,8 +39,12 @@ const SlideMenu = () => {
           </button>
           {showServices && (
             <ul className="d-flex flex-column">
-                <StyledLink className="btn" to="/Admin/Services/Index">Index</StyledLink>
-              <StyledLink className="btn" to="/Admin/Services/Add">Ajouter</StyledLink>
+              <StyledLink className="btn" to="/Admin/Services/Index">
+                Index
+              </StyledLink>
+              <StyledLink className="btn" to="/Admin/Services/Add">
+                Ajouter
+              </StyledLink>
             </ul>
           )}
         </li>
@@ -63,8 +61,12 @@ const SlideMenu = () => {
           </button>
           {showEmploye && (
             <ul className="d-flex flex-column">
-            <StyledLink className="btn" to="/Admin/User/Index">Index</StyledLink>   
-              <StyledLink className="btn" to="/Admin/User/Add">Ajouter</StyledLink>
+              <StyledLink className="btn" to="/Admin/User/Index">
+                Index
+              </StyledLink>
+              <StyledLink className="btn" to="/Admin/User/Add">
+                Ajouter
+              </StyledLink>
             </ul>
           )}
         </li>
@@ -81,8 +83,12 @@ const SlideMenu = () => {
           </button>
           {showVoitures && (
             <ul className="d-flex flex-column">
-            <StyledLink className="btn" to="/Admin/Voitures/Index">Index</StyledLink>
-              <StyledLink className="btn" to="/Admin/Voitures/Add">Ajouter</StyledLink>
+              <StyledLink className="btn" to="/Admin/Voitures/Index">
+                Index
+              </StyledLink>
+              <StyledLink className="btn" to="/Admin/Voitures/Add">
+                Ajouter
+              </StyledLink>
             </ul>
           )}
         </li>
@@ -99,8 +105,12 @@ const SlideMenu = () => {
           </button>
           {showHoraires && (
             <ul className="d-flex flex-column">
-                <StyledLink className="btn" to="/Admin/Horaires/Index">Index</StyledLink>
-              <StyledLink className="btn" to="/Admin/Horaires/Add">Ajouter</StyledLink>
+              <StyledLink className="btn" to="/Admin/Horaires/Index">
+                Index
+              </StyledLink>
+              <StyledLink className="btn" to="/Admin/Horaires/Add">
+                Ajouter
+              </StyledLink>
             </ul>
           )}
         </li>
@@ -117,8 +127,12 @@ const SlideMenu = () => {
           </button>
           {showAvis && (
             <ul className="d-flex flex-column">
-                <StyledLink className="btn" to="/Admin/Avis/Index">Index</StyledLink>
-              <StyledLink className="btn" to="/Admin/Avis/Add">Ajouter</StyledLink>
+              <StyledLink className="btn" to="/Admin/Avis/Index">
+                Index
+              </StyledLink>
+              <StyledLink className="btn" to="/Admin/Avis/Add">
+                Ajouter
+              </StyledLink>
             </ul>
           )}
         </li>

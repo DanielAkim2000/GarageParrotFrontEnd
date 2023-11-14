@@ -9,18 +9,14 @@ let logout = () => {
 let isLogged = () => {
   let token = localStorage.getItem("token");
 
-  // Vérifiez si le token est présent
   if (!token) {
     return false;
   }
 
-  // Analysez le token JWT pour obtenir la date d'expiration (par exemple, le champ 'exp')
-  const tokenData = JSON.parse(atob(token.split('.')[1]));
-  const expirationTime = tokenData.exp * 1000; // Convertir en millisecondes
+  const tokenData = JSON.parse(atob(token.split(".")[1]));
+  const expirationTime = tokenData.exp * 1000;
 
-  // Vérifiez si le token a expiré
   if (expirationTime < Date.now()) {
-    // Le token a expiré, déconnectez l'utilisateur
     logout();
     return false;
   }
@@ -40,4 +36,3 @@ const accountService = {
 };
 
 export { accountService };
-

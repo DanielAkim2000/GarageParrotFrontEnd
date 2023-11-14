@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const DeleteUser = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+  return <div></div>;
 };
 
-export {DeleteUser}
+export { DeleteUser };

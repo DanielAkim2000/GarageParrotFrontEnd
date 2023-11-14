@@ -1,10 +1,6 @@
-import React from 'react';
+import React from "react";
 const Error = () => {
-  return (
-    <div>error 405!</div>
-  );
-}
-
+  return <div className="text-center">error 404!</div>;
+};
 
 export { Error };
-

@@ -8,7 +8,6 @@ const AuthGuard = ({ children }) => {
   useEffect(() => {
     const checkTokenExpirationInterval = setInterval(() => {
       if (!accountService.isLogged()) {
-        // Le token a expiré
         setExpired(true);
         clearInterval(checkTokenExpirationInterval);
       }
@@ -29,4 +28,3 @@ const AuthGuard = ({ children }) => {
 };
 
 export default AuthGuard;
-

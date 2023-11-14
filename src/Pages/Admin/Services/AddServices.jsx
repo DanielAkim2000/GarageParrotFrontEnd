@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { Formik, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import axios from '../../../Api/axios.jsx';
-import { FormContainer, FormGroup , Label , Input, FileInput, ErrorMessageContainer, SubmitButton } from '../../../Components/Admin';
-import { useNavigate } from 'react-router-dom';
-
-
+import React, { useState } from "react";
+import { Formik, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import axios from "../../../Api/axios.jsx";
+import {
+  FormContainer,
+  FormGroup,
+  Label,
+  Input,
+  FileInput,
+  ErrorMessageContainer,
+  SubmitButton,
+} from "../../../Components/Admin";
+import { useNavigate } from "react-router-dom";
 
 const AddServices = () => {
   const [image, setImage] = useState(null);
@@ -26,36 +32,41 @@ const AddServices = () => {
           description: null,
         }}
         validationSchema={Yup.object({
-          nom: Yup.string().required('Le nom du service est requis et doit être une chaine de caractère'),
-          description: Yup.string().required('La description du service est requise et doit être une chaine de caractère'),
+          nom: Yup.string().required(
+            "Le nom du service est requis et doit être une chaine de caractère"
+          ),
+          description: Yup.string().required(
+            "La description du service est requise et doit être une chaine de caractère"
+          ),
         })}
         onSubmit={(values, { setSubmitting }) => {
           const response = window.confirm("Voulez-vous continuer ?");
-          if(response){
-          const formData = new FormData();
-          formData.append('nom', values.nom);
-          formData.append('description', values.description || '');
-          formData.append('image', image);
-          console.log(formData)
+          if (response) {
+            const formData = new FormData();
+            formData.append("nom", values.nom);
+            formData.append("description", values.description || "");
+            formData.append("image", image);
+            console.log(formData);
 
-          // Utilisez ici l'API pour envoyer le formulaire (par exemple, fetch)
-          axios.post('/api/createService', formData,{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                console.log('Réponse du serveur:', response.data);
-                navigate('/Admin/Services/Index');
+            // Utilisez ici l'API pour envoyer le formulaire (par exemple, fetch)
+            axios
+              .post("/api/createService", formData, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                console.log("Réponse du serveur:", response.data);
+                navigate("/Admin/Services/Index");
                 // Effectuez ici une redirection ou une autre action après avoir téléchargé les données.
-            })
-            .catch((error) => {
-                console.error('Erreur:', error);
-                console.log(values.nom)
-            })
-            .finally(() => {
+              })
+              .catch((error) => {
+                console.error("Erreur:", error);
+                console.log(values.nom);
+              })
+              .finally(() => {
                 setSubmitting(false);
-            });
+              });
           }
         }}
       >
@@ -63,17 +74,25 @@ const AddServices = () => {
           <FormGroup>
             <Label htmlFor="nom">Nom</Label>
             <Input type="text" id="nom" name="nom" />
-            <ErrorMessage name="nom" component={ErrorMessageContainer}/>
+            <ErrorMessage name="nom" component={ErrorMessageContainer} />
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="description">Description</Label>
             <Input type="text" id="description" name="description" />
-            <ErrorMessage name="description" component={ErrorMessageContainer}/>
+            <ErrorMessage
+              name="description"
+              component={ErrorMessageContainer}
+            />
           </FormGroup>
 
           <FormGroup>
-            <FileInput type="file" accept="image/*" name='image' onChange={handleImageChange} />
+            <FileInput
+              type="file"
+              accept="image/*"
+              name="image"
+              onChange={handleImageChange}
+            />
           </FormGroup>
 
           <FormGroup>
@@ -86,4 +105,3 @@ const AddServices = () => {
 };
 
 export { AddServices };
-

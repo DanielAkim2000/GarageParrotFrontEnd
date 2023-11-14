@@ -92,14 +92,14 @@ export default function PublicRouter() {
         {/* 👈 Renders at /#/app/ */}
         <Route
           path="/Services"
-          element={<Services services={services} temoignages={temoignages}/>}
+          element={<Services services={services} temoignages={temoignages} />}
         />{" "}
         {/* 👈 Renders at /#/app/ */}
         <Route
           path="/Voitures"
           element={<Voitures voitures={voitures} />}
         />{" "}
-        <Route path="VoituresDetails" element={<VoituresShow />}/>
+        <Route path="VoituresDetails" element={<VoituresShow />} />
         {/* 👈 Renders at /#/app/ */}
         <Route path="/NousContacter" element={<NousContacter />} />{" "}
         {/* 👈 Renders at /#/app/ */}

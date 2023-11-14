@@ -1,11 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Card from 'react-bootstrap/Card';
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import { Carte } from '../Card/Carte';
 import { CarteInfo } from '../Card/CarteInfo';
 
 function ModalContact(props) {

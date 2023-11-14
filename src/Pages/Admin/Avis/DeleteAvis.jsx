@@ -1,9 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const DeleteAvis = () => {
-    return (
-        <div>Delete Avis</div>
-    );
-}
+  return <div>Delete Avis</div>;
+};
 
 export { DeleteAvis };
