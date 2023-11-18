@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage, Field } from "formik";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "../../../Api/axios.jsx";
@@ -144,7 +144,20 @@ const EditVoitures = () => {
 
           <FormGroup>
             <Label htmlFor="description">Description</Label>
-            <Input type="text" id="description" name="description" />
+            <Field as="select" id="description" name="description" >
+            <option key="Essence" value="Essence">
+                      Essence
+            </option>
+            <option key="Diesel" value="Diesel">
+                      Diesel
+            </option>
+            <option key="Electrique" value="Electrique">
+                      Electrique
+            </option>
+            <option key="Hybride" value="Hybride">
+                      Hybride
+            </option>
+            </Field>
             <ErrorMessage
               name="description"
               component={ErrorMessageContainer}

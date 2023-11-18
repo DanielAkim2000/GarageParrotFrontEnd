@@ -11,6 +11,7 @@ import {
   Avis,
   Layout,
   VoituresShow,
+  ServiceShow,
 } from "../Pages/Public";
 import { Login } from "../Pages/Login";
 
@@ -100,6 +101,7 @@ export default function PublicRouter() {
           element={<Voitures voitures={voitures} />}
         />{" "}
         <Route path="VoituresDetails" element={<VoituresShow />} />
+        <Route path="ServicesDetails" element={<ServiceShow />} />
         {/* 👈 Renders at /#/app/ */}
         <Route path="/NousContacter" element={<NousContacter />} />{" "}
         {/* 👈 Renders at /#/app/ */}

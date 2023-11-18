@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Carte, Paginator } from "../../Components/Public";
 import Form from "react-bootstrap/Form";
 import axios from "../../Api/axios.jsx";
+import InputGroup from "react-bootstrap/InputGroup";
+import "./style.css"
 
 const Voitures = (props) => {
   let voitures = props.voitures;
 
   // donnee pour les paginator
-  let nombreElementPages = 2;
+  let nombreElementPages = 8;
   const [debut, setDebut] = useState(0);
   const [fin, setFin] = useState(nombreElementPages);
   let dataMap = voitures.slice(debut, fin);
@@ -80,33 +82,53 @@ const Voitures = (props) => {
       <div>
         <Form>
           <Form.Group className="d-flex flex-row flex-wrap w-100 justify-content-center align-items-center">
-            <Form.Label className="m-3 w-25">Kilométrage:</Form.Label>
+            <Form.Label style={{width:"20%"}} >Kilométrage:</Form.Label>
             <Form.Range
               className="m-3 w-50"
               defaultValue={kilometrage}
-              min={100000}
+              min={0}
               max={500000}
+              step={10000}
               onChange={(e) => {
                 setKilometrage(e.target.value);
                 filtre();
               }}
             ></Form.Range>
-            <Form.Label className="m-3 w-25">Prix:</Form.Label>
+            <InputGroup style={{width:"20%"}} size="sm" className="mesure">
+              <InputGroup.Text id="inputGroup-sizing-sm mesure">Km</InputGroup.Text>
+              <Form.Control
+                aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm"
+                value={kilometrage+"Km"}
+                disabled
+              />
+            </InputGroup>
+            <Form.Label style={{width:"20%"}} >Prix:</Form.Label>
             <Form.Range
               className="m-3 w-50"
               defaultValue={prix}
-              min={1000}
+              min={0}
               max={100000}
+              step={1000}
               onChange={(e) => {
                 setPrix(e.target.value);
                 filtre();
               }}
             ></Form.Range>
-            <Form.Label className="m-3 w-25">Année:</Form.Label>
+            <InputGroup style={{width:"20%"}} size="sm" className="mesure">
+              <InputGroup.Text id="inputGroup-sizing-sm mesure">€:</InputGroup.Text>
+              <Form.Control
+                aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm"
+                value={prix+"€"}
+                disabled
+              />
+            </InputGroup>
+            <Form.Label style={{width:"20%"}} >Année:</Form.Label>
             <Form.Range
               className="m-3 w-50"
               defaultValue={annee}
-              min={2000}
+              min={1998}
               max={2023}
               onChange={(e) => {
                 setAnnee(e.target.value);
@@ -114,6 +136,15 @@ const Voitures = (props) => {
                 filtre();
               }}
             ></Form.Range>
+            <InputGroup style={{width:"20%"}} size="sm" className="mesure">
+              <InputGroup.Text id="inputGroup-sizing-sm mesure">Y:</InputGroup.Text>
+              <Form.Control
+                aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm"
+                value={annee}
+                disabled
+              />
+            </InputGroup>
           </Form.Group>
         </Form>
       </div>

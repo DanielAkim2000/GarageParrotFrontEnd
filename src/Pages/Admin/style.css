@@ -97,3 +97,10 @@
     margin-left: 5px;
   }
 }
+
+@media screen and (max-width: 500px) {
+  .Field{
+    max-width:40%;
+    margin-left:50px;
+  }
+}

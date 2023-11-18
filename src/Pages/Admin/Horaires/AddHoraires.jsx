@@ -70,7 +70,7 @@ const AddHoraires = () => {
         <Form>
           <FormGroup>
             <Label htmlFor="jour_semaine">Jour:</Label>
-            <Field as="select" id="jour_semaine" name="jour_semaine">
+            <Field as="select" className='Field' id="jour_semaine" name="jour_semaine">
               {jourSemaine
                 ? jourSemaine.map((jour) => (
                     <option key={jour} value={jour}>
@@ -96,7 +96,7 @@ const AddHoraires = () => {
           </FormGroup>
 
           <FormGroup>
-            <SubmitButton type="submit">Télécharger</SubmitButton>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
           </FormGroup>
         </Form>
       </Formik>

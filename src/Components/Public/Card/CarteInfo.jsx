@@ -9,7 +9,7 @@ const CarteInfo = (props) => {
   // (donnees et etats)
   const data = props.data;
   return (
-    <CustomCard style={{ width: "80%", textAlign: "center" }}>
+    <CustomCard style={{ width: "100%", textAlign: "center" }}>
       <CustomCard.Img
         className="w-sm-50 h-sm-50"
         height={"170px"}

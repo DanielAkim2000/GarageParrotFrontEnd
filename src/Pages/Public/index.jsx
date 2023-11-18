@@ -6,3 +6,4 @@ export * from "./Services.jsx";
 export * from "./Voitures.jsx";
 export * from "./Avis.jsx";
 export * from "./VoituresShow.jsx";
+export * from "./ServiceShow.jsx";

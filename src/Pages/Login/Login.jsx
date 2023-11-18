@@ -1,23 +1,25 @@
-import axios from "axios";
+import axios from "../../Api/axios.jsx";
 import React from "react";
 import { useState } from "react";
 import { accountService } from "../../services/account.services";
 import { useNavigate } from "react-router-dom";
+import { AlertAkim } from "../../Components/Public/index.jsx";
+
 
 const Login = () => {
   // state etats données
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [alert, setAlert] = useState(false);
   const navigate = useNavigate();
-
   // console.log(email,password)
   // comportement
 
   const onClick = (event) => {
     event.preventDefault();
     axios
-      .post("http://127.0.0.1:8000/api/login", {
+      .post("/api/login", {
         username: email,
         password: password,
       })
@@ -26,13 +28,16 @@ const Login = () => {
         navigate("/admin");
       })
       .catch((error) => {
-        console.log(error);
+        setAlert(true)
       });
   };
 
   return (
-    <form className="rounded shadow bg-white m-3">
+    <form className="rounded w-25 shadow bg-white m-3">
       <div className="form-group w-75 m-auto">
+        {alert?<AlertAkim texthead="Mot de passe ou email incorrets" text="Vérifier vos identifiants de connexion" variant='danger'/>:
+        ''
+        }
         <label for="exampleInputEmail1" className="m-1">
           Email:
         </label>

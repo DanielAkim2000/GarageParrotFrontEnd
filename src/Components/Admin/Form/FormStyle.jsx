@@ -5,6 +5,7 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width:100%
 `;
 
 const FormGroup = styled.div`
@@ -16,6 +17,10 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   font-weight: bold;
+  @media screen and (max-width: 500px) {
+    width:40%;
+    margin-left:50px;
+  }
 `;
 
 const Input = styled(Field)`
@@ -23,6 +28,10 @@ const Input = styled(Field)`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  @media screen and (max-width: 500px) {
+    width:40%;
+    margin-left:50px;
+  }
 `;
 
 const FileInput = styled.input`
@@ -30,6 +39,10 @@ const FileInput = styled.input`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  @media screen and (max-width: 500px) {
+    width:50%;
+    margin-left:50px;
+  }
 `;
 
 const ErrorMessageContainer = styled.div`
@@ -47,6 +60,10 @@ const SubmitButton = styled.button`
   cursor: pointer;
   font-weight: bold;
   margin-top: 20px;
+  @media screen and (max-width: 500px) {
+    width:40%;
+    margin-left:50px;
+  }
 `;
 
 const ImageInput = styled.img`

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
 import axios from "../../../Api/axios.jsx";
 import {
@@ -30,10 +30,10 @@ const AddVoitures = () => {
         initialValues={{
           marque: null,
           modele: null,
-          annee_mise_en_circulation: null,
+          annee_mise_en_circulation: 2000,
           prix: null,
           kilometrage: null,
-          description: null,
+          description: "Essence",
         }}
         validationSchema={Yup.object({
           marque: Yup.string().required(
@@ -82,6 +82,7 @@ const AddVoitures = () => {
               })
               .catch((error) => {
                 console.error("Erreur:", error);
+                navigate("/Admin/Voitures/Index");
               })
               .finally(() => {
                 setSubmitting(false);
@@ -134,7 +135,20 @@ const AddVoitures = () => {
 
           <FormGroup>
             <Label htmlFor="description">Description</Label>
-            <Input type="text" id="description" name="description" />
+            <Field as="select" className="Field" id="description" name="description" >
+            <option key="Essence" value="Essence">
+                      Essence
+            </option>
+            <option key="Diesel" value="Diesel">
+                      Diesel
+            </option>
+            <option key="Electrique" value="Electrique">
+                      Electrique
+            </option>
+            <option key="Hybride" value="Hybride">
+                      Hybride
+            </option>
+            </Field>
             <ErrorMessage
               name="description"
               component={ErrorMessageContainer}
@@ -148,10 +162,11 @@ const AddVoitures = () => {
               name="image"
               onChange={handleImageChange}
             />
+            <ErrorMessage name="image" component={ErrorMessageContainer} />
           </FormGroup>
 
           <FormGroup>
-            <SubmitButton type="submit">Télécharger</SubmitButton>
+            <SubmitButton type="submit">Enregistrer</SubmitButton>
           </FormGroup>
         </Form>
       </Formik>

@@ -3,6 +3,7 @@ import React from "react";
 import "./Footer.css";
 import { MDBFooter, MDBContainer, MDBCol, MDBRow } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
+import { ModalContact } from "../ModalContact/ModalContact";
 
 const CustomFooter = styled.footer`
   display: grid;
@@ -35,16 +36,7 @@ const Footer = (props) => {
     <CustomFooter className="mt-3">
       <MDBFooter className="text-center w-100" color="white" bgColor="dark">
         <MDBContainer className="p-4">
-          <section className="mb-4">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
-              distinctio earum repellat quaerat voluptatibus placeat nam,
-              commodi optio pariatur est quia magnam eum harum corrupti dicta,
-              aliquam sequi voluptate quas.
-            </p>
-          </section>
-
-          <section className="">
+          <section className="mt-2">
             <MDBRow>
               {horaires &&
                 horairesTries.map((horaire) => (
@@ -76,6 +68,10 @@ const Footer = (props) => {
           <Link className="text-white" to="/Home">
             Accueil
           </Link>
+          <div>
+            <p>Nous contactez:</p>
+            <ModalContact />
+          </div>
         </div>
       </MDBFooter>
     </CustomFooter>

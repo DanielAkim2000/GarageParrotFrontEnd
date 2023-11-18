@@ -14,15 +14,16 @@ const CardTemoignages = (props) => {
       style={{
         width: width + "px",
         textAlign: "center",
-        height: 200,
+        height: 250,
         margin: "20px",
+        overflow: "hidden",
       }}
     >
-      <CustomCard.Body height={"100px"}>
+      <CustomCard.Body height={"200px"}>
         <CustomCard.Title>
           <Etoiles note={data.note} />
         </CustomCard.Title>
-        <CustomCard.Text>{data.commentaire}</CustomCard.Text>
+        <CustomCard.Text className="text-center text-justify ">{data.commentaire}</CustomCard.Text>
         <CustomCard.Text>{data.nom}</CustomCard.Text>
       </CustomCard.Body>
     </CustomCard>

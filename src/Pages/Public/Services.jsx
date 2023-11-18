@@ -1,18 +1,19 @@
 import Card from "react-bootstrap/Card";
+import { useNavigate } from "react-router-dom";
 import {
-  ScrollBar,
   Paginator,
   CardTemoignages,
   ModalsAvis,
   ModalAfficheAvis,
 } from "../../Components/Public";
 import { useState } from "react";
-import Button from "react-bootstrap/esm/Button";
+import Button from "react-bootstrap/Button";
 
 const Services = (props) => {
   // (etats et donnees)
   let services = props.services;
   let temoignages = props.temoignages;
+  const navigate = useNavigate();
   // data pour le paginator
   let nombreElementPages = 2;
   const [debut, setDebut] = useState(0);
@@ -20,6 +21,9 @@ const Services = (props) => {
   let dataMap = services.slice(debut, fin);
 
   //Comportements
+  const goDetails = (data) => {
+    navigate("/ServicesDetails", { state: { data: data } });
+  };
   const changePage = (e) => {
     // Element suivant
     if (
@@ -77,7 +81,14 @@ const Services = (props) => {
                   <Card.Title>{service.nom}</Card.Title>
                 </Card.ImgOverlay>
               </Card>
-              <a href="/Service">En savoir plus</a>
+              <Button
+                className="mt-2"
+                onClick={() => {
+                  goDetails(service);
+                }}
+              >
+                En savoir plus
+              </Button>
             </div>
           ))}
       </div>

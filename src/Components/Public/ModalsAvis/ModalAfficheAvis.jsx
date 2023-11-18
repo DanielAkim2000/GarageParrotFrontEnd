@@ -10,7 +10,7 @@ function ModalAfficheAvis(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  let nombreElementPages = 4;
+  let nombreElementPages = 2;
   const [debut, setDebut] = useState(0);
   const [fin, setFin] = useState(nombreElementPages);
   let dataMap = avis.slice(debut, fin);

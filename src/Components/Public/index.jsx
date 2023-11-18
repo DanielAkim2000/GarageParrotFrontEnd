@@ -13,3 +13,4 @@ export * from "./ModalsAvis/ModalsAvis.jsx";
 export * from "./ModalContact/ModalContact.jsx";
 export * from "./Card/CarteInfo.jsx";
 export * from "./ModalsAvis/ModalAfficheAvis.jsx";
+export * from "./Alert/Alert.jsx";

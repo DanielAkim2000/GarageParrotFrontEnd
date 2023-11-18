@@ -159,8 +159,14 @@ const Header = () => {
   // affichage (render)
   return (
     <Container className={isNavVisible ? `${animationHeader}` : ""}>
-      <Image src={logo} />
-      <NAMEOFSITE>Garage V.Parrot</NAMEOFSITE>
+      <Link to="/Home">
+        <Image src={logo}></Image>
+      </Link>
+      <NAMEOFSITE>
+        <Link style={{ textDecoration: "none", color: "black" }} to="/Home">
+          Garage V.Parrot
+        </Link>
+      </NAMEOFSITE>
       {(isNavVisible || isBigScreen) && (
         <Nav className={`${animationHeader}`}>
           <UL>

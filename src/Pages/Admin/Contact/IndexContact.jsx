@@ -61,6 +61,7 @@ const IndexContact = () => {
             <th scope="col">Numéro de téléphone</th>
             <th scope="col">Message</th>
             <th scope="col">Sujet</th>
+            <th scope="col">Voiture</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -80,6 +81,11 @@ const IndexContact = () => {
                 <td>{contact.numero_telephone}</td>
                 <td>{contact.message}</td>
                 <td>{contact.sujet}</td>
+                <td className="image-cell">{contact.voiture?<img
+                    src={contact.voiture.image}
+                    alt={contact.voiture.modele}
+                    className="img-fluid  img-thumbnail"
+                  />:<>Pas d'image</>}</td>
                 <td>
                   <Button
                     onClick={() => {

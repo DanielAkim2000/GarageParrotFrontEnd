@@ -1,6 +1,7 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const CustomCard = styled(Card)`
   margin: 10px;
@@ -9,6 +10,10 @@ const CustomCard = styled(Card)`
 const CardServices = (props) => {
   const width = props.width;
   const data = props.data;
+  const navigate = useNavigate();
+  const goDetails = () => {
+    navigate("/ServicesDetails", { state: { data: data } });
+  };
   return (
     <CustomCard
       style={{
@@ -24,7 +29,9 @@ const CardServices = (props) => {
         <CustomCard.Title style={{ height: "50px" }}>
           {data.nom}
         </CustomCard.Title>
-        <Button style={{ height: "50px" }}>Découvrir</Button>
+        <Button onClick={() => {
+            goDetails();
+          }} style={{ height: "50px" }}>Découvrir</Button>
       </CustomCard.Body>
     </CustomCard>
   );
