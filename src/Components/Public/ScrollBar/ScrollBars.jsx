@@ -5,8 +5,8 @@ const IMG = styled.img`
   max-height: 500px;
   min-height: 500px;
   @media (max-width: 500px) {
-    max-height: 250px; 
-    min-height: 250px; 
+    max-height: 230px; 
+    min-height: 230px; 
   }
   @media (max-width: 800px) {
     max-height: 350px; 
