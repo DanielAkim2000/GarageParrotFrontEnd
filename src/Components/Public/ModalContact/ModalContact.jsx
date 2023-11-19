@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../../Api/axios.jsx";
 import Form from "react-bootstrap/Form";
 import { CarteInfo } from "../Card/CarteInfo";
 
@@ -37,7 +37,7 @@ function ModalContact(props) {
       sujet: sujet,
     });
     axios
-      .post("http://localhost:8000/api/endpointcontact", {
+      .post("/api/endpointcontact", {
         nom: nom,
         prenom: prenom,
         email: email,
