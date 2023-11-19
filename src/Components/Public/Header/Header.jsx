@@ -51,6 +51,7 @@ const NavButton = styled.button`
   @media screen and (min-width: 700px) {
     display: none;
   }
+  background-image: url(https://www.google.com/url?sa=i&url=https%3A%2F%2Ficon-icons.com%2Ficon%2Fhamburger-button-menu%2F155296&psig=AOvVaw1kPuzXOU-NVXj5qCqAsLPw&ust=1700445335058000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJC40NP6zoIDFQAAAAAdAAAAABAE)
 `;
 const CustomLi = styled.li`
   border-top: solid black 1px;

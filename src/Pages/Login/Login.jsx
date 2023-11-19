@@ -33,7 +33,7 @@ const Login = () => {
   };
 
   return (
-    <form className="rounded w-25 shadow bg-white m-3">
+    <form className="rounded shadow bg-white m-3">
       <div className="form-group w-75 m-auto">
         {alert?<AlertAkim texthead="Mot de passe ou email incorrets" text="Vérifier vos identifiants de connexion" variant='danger'/>:
         ''
