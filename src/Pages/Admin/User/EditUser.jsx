@@ -92,7 +92,7 @@ const EditUser = () => {
             <ErrorMessage name="email" component={ErrorMessageContainer} />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup className="d-none">
             <Label htmlFor="password">Password:</Label>
             <Input type="text" id="password" name="password" />
             <ErrorMessage name="password" component={ErrorMessageContainer} />
