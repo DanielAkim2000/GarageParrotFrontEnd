@@ -11,9 +11,11 @@
 
 /* Button Hamburger */
 .bouton-hamburger {
-    width: 30px;
+    width: 26px;
     height: 30px;
-    background-color: #333;
+    border: 0;
+    background-image: url('bars-solid.svg');
+    background-color: white;
   }
   
   
