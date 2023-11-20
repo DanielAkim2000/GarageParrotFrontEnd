@@ -70,6 +70,7 @@ const Footer = (props) => {
           </Link>
           <div>
             <p>Nous contactez:</p>
+            <a href="tel:+0000000000">Appelez-nous au +0000000000</a>
             <ModalContact />
           </div>
         </div>
