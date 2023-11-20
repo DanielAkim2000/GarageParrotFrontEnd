@@ -23,6 +23,7 @@ const ModalsAvis = () => {
       })
       .then((response) => {
         console.log(response);
+        alert('Votre avis à bien été envoyé');
         handleClose();
       })
       .catch((error) => {
