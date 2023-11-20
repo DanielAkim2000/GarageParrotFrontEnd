@@ -22,7 +22,7 @@ export function Home(props) {
   return (
     <div className="bg-light w-100 ">
       <div className="w-100 h-50  d-flex flex-column justify-content-center m-auto align-items-center font-weight-bold">
-        <h5 className="m-3  text-justify w-75 text-center">Moderne et parfaitement équipé, le Garage V.Parrot assure le diagnostic et la réparation toutes marques de vos véhicules.Nous proposons une gamme complète de services de garage aux propriétaires de véhicules. 
+        <h5 className="m-3  text-justify w-75 text-center">Moderne et parfaitement équipé, le Garage V.Parrot assure le diagnostic et la réparation de toutes marques de vos véhicules.Nous proposons une gamme complète de services de garage aux propriétaires de véhicules. 
 Le Garage V.Parrot vous propose une large gamme de services automobiles.</h5>
         <p className="m-3 text-uppercase text-center">Tous nos services sont délivrés par des mécaniciens hautement qualifiés.</p>
       </div>
