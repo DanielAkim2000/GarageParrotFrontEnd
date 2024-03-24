@@ -88,7 +88,7 @@ const AddUser = () => {
 
           <FormGroup>
             <Label htmlFor="password">Mot de passe:</Label>
-            <Input type="text" id="password" name="password" />
+            <Input type="password" id="password" name="password" />
             <ErrorMessage name="password" component={ErrorMessageContainer} />
           </FormGroup>
 

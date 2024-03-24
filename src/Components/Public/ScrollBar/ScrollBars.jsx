@@ -16,7 +16,7 @@ const IMG = styled.img`
 function CarrousellAkim(props) {
   const datas = props.services;
   return (
-    <Carousel className="border border-dark w-100 shadow">
+    <Carousel className="border border-light w-100 shadow">
       {datas &&
         datas.map((data) => (
           <Carousel.Item className="shadow" interval={1000}>
